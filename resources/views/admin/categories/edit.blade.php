@@ -20,6 +20,17 @@
                             value="{{ old('name', $category->name) }}">
                     </div>
                 </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="form-group mb-4">
+                        <label for="">{{ __('messages.category.fields.group') }}</label>
+                        <select name="group_id" id="group_id" class="form-select select2" data-placeholder="---Please Select---">
+                            <option value=""></option>
+                            @foreach ($groups as $group)
+                                <option value="{{$group->id}}" {{$group->id == $category->group_id ? 'selected' : ''}}>{{$group->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="mt-5">
                 <button class="btn btn-secondary back-btn">Cancel</button>

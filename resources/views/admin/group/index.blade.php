@@ -1,27 +1,26 @@
 @extends('layouts.app')
-@section('title', 'Category')
+@section('title', 'Group')
 
 @section('content')
     <div class="card-head-icon">
-        <i class='bx bxs-food-menu' style="color: rgb(182, 119, 36);"></i>
-        <div>{{ __('messages.category.title') }}</div>
+        <i class='bx bxs-pie-chart-alt-2' style="color: rgb(14, 97, 41);"></i>
+        <div>{{ __('messages.group.title') }}</div>
     </div>
 
     <div class="card mt-3">
         <div class="d-flex justify-content-between m-3">
-            <span>{{ __('messages.category.title') }} List</span>
+            <span>{{ __('messages.group.title') }} List</span>
             @can('user_create')
-                <a href="{{ route('admin.categories.create') }}" class="btn btn-primary text-decoration-none text-white"><i
+                <a href="{{ route('admin.groups.create') }}" class="btn btn-primary text-decoration-none text-white"><i
                         class='bx bxs-plus-circle me-2'></i>
-                    Create New {{ __('messages.category.title') }}</a>
+                    Create New {{ __('messages.group.title') }}</a>
             @endcan
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped w-100" id="DataTable">
                 <thead>
                     <th class="no-sort"></th>
-                    <th>{{ __('messages.category.fields.name') }}</th>
-                    <th>{{ __('messages.category.fields.group') }}</th>
+                    <th>{{ __('messages.group.fields.name') }}</th>
                     <th class="no-sort text-nowrap">Action</th>
                 </thead>
                 <tbody>
@@ -40,7 +39,7 @@
                 processing: true,
                 responsive: true,
                 serverSide: true,
-                ajax: '/admin/category-datatable',
+                ajax: '/admin/group-datatable',
                 columns: [{
                         data: 'plus-icon',
                         name: 'plus-icon'
@@ -48,10 +47,6 @@
                     {
                         data: 'name',
                         name: 'name'
-                    },
-                    {
-                        data: 'group_id',
-                        data: 'group_id',
                     },
                     {
                         data: 'action',
@@ -82,7 +77,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "/admin/categories/" + id,
+                            url: "/admin/groups/" + id,
                             type: "DELETE",
                             data: {
                                 _token: "{{ csrf_token() }}"

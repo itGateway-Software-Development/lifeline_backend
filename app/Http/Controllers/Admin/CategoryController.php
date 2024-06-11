@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DataTables;
+use App\Models\Group;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
-use App\Models\Category;
-use DataTables;
 
 class CategoryController extends Controller
 {
@@ -23,11 +24,20 @@ class CategoryController extends Controller
      */
     public function dataTable()
     {
-        $data = Category::query();
+        $data = Category::with('group');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {
                 return null;
+            })
+            ->editColumn('group_id', function($each) {
+                return $each->group->name;
+            })
+
+            ->filterColumn('group_id', function($query, $keyword) {
+                $query->whereHas('group', function($q) use ($keyword) {
+                    $q->where('name', 'like', "%$keyword%");
+                });
             })
             ->addColumn('action', function ($each) {
                 $show_icon = '';
@@ -58,7 +68,9 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        $groups = Group::all();
+
+        return view('admin.categories.create', compact('groups'));
     }
 
     /**
@@ -66,7 +78,10 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        Category::create($request->all());
+        $category = new Category();
+        $category->name = $request->name;
+        $category->group_id = $request->group_id;
+        $category->save();
 
         return redirect()->route('admin.categories.index')->with('success', 'Successfully Created !');
     }
@@ -84,7 +99,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', compact('category'));
+        $groups = Group::all();
+        $category = $category->load('group');
+        return view('admin.categories.edit', compact('category', 'groups'));
     }
 
     /**
@@ -92,7 +109,9 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category->update($request->all());
+        $category->name = $request->name;
+        $category->group_id = $request->group_id;
+        $category->update();
 
         return redirect()->route('admin.categories.index')->with('success', 'Successfully Edited !');
     }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('price')->nullable();
             $table->foreignId('principle_id')->references('id')->on('principles')->onDelete('cascade');
             $table->foreignId('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreignId('group_id')->references('id')->on('groups')->onDelete('cascade');
             $table->timestamps();
         });
     }

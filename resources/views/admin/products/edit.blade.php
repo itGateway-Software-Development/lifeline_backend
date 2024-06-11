@@ -47,7 +47,27 @@
 
             </div>
             <div class="row">
-                <div class="col-lg-8 col-md-12 col-sm-12 col-12 mt-3">
+                <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                    <div class="form-group mb-4">
+                        <label for="">{{ __('messages.product.fields.category') }}</label>
+                        <select name="category_id" id="" class="form-control select2 category_id"
+                            data-placeholder="--- Please Select ---">
+                            <option value=""></option>
+                            @foreach ($categories as $id => $value)
+                                <option value="{{ $id }}" {{ old('category_id') == $id || $id == $product->category_id ? 'selected' : '' }}>
+                                    {{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 col-12">
+                    <div class="form-group mb-4">
+                        <label for="">{{ __('messages.product.fields.group') }}</label>
+                        <input type="text" name="" readonly class="form-control group_name" value="{{$group_name}}">
+                        <input type="hidden" name="group_id" class="group_id" value="{{$product->group_id}}">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                     <div class="form-group mb-4">
                         <label for="">{{ __('messages.product.fields.photo') }}</label>
                         <div class="needslick dropzone" id="image-dropzone">
@@ -157,5 +177,22 @@
 
 
         }
+
+        $(document).ready(function() {
+            $(document).on('change', '.category_id', function() {
+                let category_id = $(this).val();
+
+                $.ajax({
+                    url: "/admin/product-get-group?category_id="+category_id,
+                    type: 'GET',
+                    success: function(res) {
+                       if(res) {
+                            $('.group_name').val(res.group.name);
+                            $('.group_id').val(res.group.id);
+                       }
+                    }
+                })
+            })
+        })
     </script>
 @endsection

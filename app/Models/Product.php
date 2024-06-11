@@ -11,7 +11,7 @@ class Product extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['name', 'price', 'principle_id', 'category_id'];
+    protected $fillable = ['name', 'price', 'principle_id', 'category_id', 'group_id'];
 
     public function principle()
     {
@@ -32,5 +32,4 @@ class Product extends Model implements HasMedia
     {
         return collect($this->getMedia('images'));
     }
-
 }

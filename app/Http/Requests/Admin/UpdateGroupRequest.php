@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends FormRequest
+class UpdateGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,9 +21,9 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('group')->id;
         return [
-            'name' => 'required',
-            'group_id' => 'required'
+            'name' => 'required|unique:groups,name,'.$id
         ];
     }
 }

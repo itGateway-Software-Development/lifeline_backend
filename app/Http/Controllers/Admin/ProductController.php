@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Category;
+use App\Models\Group;
 use App\Models\Ingredient;
 use App\Models\Principle;
 use App\Models\Product;
@@ -108,6 +109,20 @@ class ProductController extends Controller
         return view('admin.products.create', compact('ingredients', 'principles', 'categories'));
     }
 
+    public function getGroup(Request $request) {
+        $category_id = $request->category_id;
+
+        if($category_id) {
+            $category = Category::findOrFail($category_id);
+
+            if($category) {
+                $group = Group::findOrFail($category->group_id);
+
+                return response()->json(['group' => $group]);
+            }
+        }
+    }
+
     /**
      * store images from dropzone
      */
@@ -153,6 +168,7 @@ class ProductController extends Controller
             $product = Product::create($request->all());
 
             foreach ($request->input('images', []) as $image) {
+                logger($image);
                 $product->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('images');
             }
 
@@ -185,8 +201,11 @@ class ProductController extends Controller
         $product = $product->load('ingredients', 'principle');
         $principles = Principle::pluck('name', 'id');
         $ingredients = Ingredient::pluck('name', 'id');
+        $categories = Category::pluck('name', 'id');
 
-        return view('admin.products.edit', compact('product', 'principles', 'ingredients'));
+        $group_name = Group::findOrFail($product->group_id)->name;
+
+        return view('admin.products.edit', compact('product', 'principles', 'ingredients', 'categories', 'group_name'));
     }
 
     /**

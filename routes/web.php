@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PrincipleController;
@@ -41,6 +42,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/principle-datatable', [PrincipleController::class, 'dataTable']);
     Route::resource('principles', PrincipleController::class);
 
+    //group
+    Route::get('/group-datatable', [GroupController::class, 'dataTable']);
+    Route::resource('groups', GroupController::class);
+
     //category
     Route::get('/category-datatable', [CategoryController::class, 'dataTable']);
     Route::resource('categories', CategoryController::class);
@@ -53,6 +58,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/product-datatable', [ProductController::class, 'dataTable']);
     Route::post('/products/storeMedia', [ProductController::class, 'storeMedia'])->name('products.storeMedia');
     Route::post('/products/deleteMedia', [ProductController::class, 'deleteMedia'])->name('products.deleteMedia');
+    Route::get('/product-get-group', [ProductController::class, 'getGroup'])->name('product.get-group');
     Route::resource('products', ProductController::class);
 });
 

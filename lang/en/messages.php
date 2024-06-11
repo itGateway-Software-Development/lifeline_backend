@@ -11,10 +11,18 @@ return [
         ],
     ],
 
+    'group' => [
+        'title' => 'Group',
+        'fields' => [
+            'name' => 'Name',
+        ],
+    ],
+
     'category' => [
         'title' => 'Category',
         'fields' => [
             'name' => 'Name',
+            'group' => 'Group'
         ],
     ],
 
@@ -34,6 +42,7 @@ return [
             'photo' => 'Photo',
             'principle' => 'Principle',
             'category' => 'Category',
+            'group' => 'Group'
         ],
     ],
 ];

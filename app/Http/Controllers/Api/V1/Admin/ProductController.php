@@ -34,10 +34,11 @@ class ProductController extends Controller
      *      )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('media', 'principle', 'ingredients', 'category')->get();
+        $keyword = $request->keyword;
 
+        $products = Product::with('media', 'principle', 'ingredients', 'category')->where('name', 'like', "%$keyword%")->get();
 
         return response(['products' => ProductResource::collection($products)]);
     }
