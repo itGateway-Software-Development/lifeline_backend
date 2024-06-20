@@ -47,6 +47,7 @@ class PhotoGalleryController extends Controller
                 return "<div class='d-flex align-items-center'> $image </div>";
             })
             ->addColumn('action', function ($each) {
+
                 $show_icon = '';
                 $edit_icon = '';
                 $del_icon = '';
