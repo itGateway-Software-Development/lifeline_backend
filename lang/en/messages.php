@@ -45,4 +45,12 @@ return [
             'group' => 'Group'
         ],
     ],
+
+    'photo_gallery' => [
+        'title' => 'Photo Gallery',
+        'fields' => [
+            'date' => 'Date',
+            'photos' => 'Photos',
+        ]
+    ]
 ];

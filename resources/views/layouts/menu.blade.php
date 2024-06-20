@@ -120,5 +120,24 @@
                 </ul>
             </li>
         @endcan
+        @can('activity_management_access')
+            <li
+                class="menu-item {{ request()->is('admin/photo-gallery') || request()->is('admin/photo-gallery/*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class='menu-icon tf-icons bx bxs-landscape' ></i>
+                    <div data-i18n="Account Settings">Activity Management</div>
+                </a>
+                <ul class="menu-sub">
+                    @can('photo_gallery_access')
+                        <li
+                            class="menu-item {{ request()->is('admin/photo-gallery') || request()->is('admin/photo-gallery/*') ? 'active open' : '' }}">
+                            <a href="{{ route('admin.photo-gallery.index') }}" class="menu-link">
+                                <div data-i18n="Account">{{ __('messages.photo_gallery.title') }}</div>
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+        @endcan
     </ul>
 </aside>

@@ -33,6 +33,15 @@
     gap: 40px;
 }
 
+.date {
+    background: transparent !important;
+}
+
+.dropzone {
+    border: 2px solid #e8ebf3 !important;
+    border-radius: 10px !important;
+}
+
 @media (max-width: 767px) {
     #DataTable_length {
         text-align: left;
