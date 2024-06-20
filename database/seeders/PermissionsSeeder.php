@@ -139,6 +139,24 @@ class PermissionsSeeder extends Seeder
             [
                 'title' => 'group_access',
             ],
+            [
+                'title' => 'activity_management_access',
+            ],
+            [
+                'title' => 'photo_gallery_create',
+            ],
+            [
+                'title' => 'photo_gallery_edit',
+            ],
+            [
+                'title' => 'photo_gallery_show',
+            ],
+            [
+                'title' => 'photo_gallery_delete',
+            ],
+            [
+                'title' => 'photo_gallery_access',
+            ],
         ];
 
         Permission::insert($permissions);

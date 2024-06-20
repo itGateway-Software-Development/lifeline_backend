@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Admin\GroupController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\PhotoGalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     //Products
     Route::get('/products', [ProductController::class, 'index']);
+
+    //PhotoGalery
+    Route::get('/photo-gallery', [PhotoGalleryController::class, 'index']);
 });

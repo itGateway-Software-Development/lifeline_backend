@@ -55,6 +55,9 @@
     {{-- dropzone  --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
 
+    {{-- flatpicker  --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
 </head>
 
 <body>
@@ -152,6 +155,9 @@
     {{-- dropzone  --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
+    {{-- flatpicker  --}}
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
     @yield('scripts')
 
@@ -177,6 +183,15 @@
                 window.history.go(-1);
                 return false;
             })
+
+            // date picker
+            let date = $('.date');
+            if(date) {
+                date.flatpickr({
+                    enableTime: true,
+                    dateFormat: "Y-m-d H:i",
+                })
+            }
 
             //select 2
             $('.select2').select2({
