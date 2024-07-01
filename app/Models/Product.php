@@ -11,7 +11,7 @@ class Product extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
 
-    protected $fillable = ['name', 'price', 'principle_id', 'category_id', 'group_id'];
+    protected $fillable = ['name', 'price', 'principle_id', 'category_id', 'group_id', 'presentation', 'detail_group', 'dose', 'indication'];
 
     public function principle()
     {

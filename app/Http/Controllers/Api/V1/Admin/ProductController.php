@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -43,4 +44,9 @@ class ProductController extends Controller
         return response(['products' => ProductResource::collection($products)]);
     }
 
+    public function show(Product $product) {
+        $product = $product->load('media', 'principle', 'ingredients', 'category');
+
+        return response(['product' => new ProductDetailResource($product), 'message' => 'success']);
+    }
 }

@@ -150,6 +150,7 @@ class ProductController extends Controller
      */
     public function deleteMedia(Request $request)
     {
+        logger($request->all());
         $file = $request->file_name;
 
         File::delete(storage_path('tmp/uploads/' . $file));
@@ -214,12 +215,14 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         DB::beginTransaction();
+
         try {
             $product->update($request->all());
 
             if (count($product->productImages()) > 0) {
                 foreach ($product->productImages() as $media) {
                     if (!in_array($media->file_name, $request->input('images', []))) {
+                        logger('delete');
                         $media->delete();
                     }
                 }

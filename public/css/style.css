@@ -42,6 +42,11 @@
     border-radius: 10px !important;
 }
 
+
+.ck-editor__editable {
+    min-height: 200px;
+  }
+
 @media (max-width: 767px) {
     #DataTable_length {
         text-align: left;

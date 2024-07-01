@@ -32,6 +32,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     //Products
     Route::get('/products', [ProductController::class, 'index']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
 
     //PhotoGalery
     Route::get('/photo-gallery', [PhotoGalleryController::class, 'index']);

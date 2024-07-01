@@ -78,6 +78,42 @@
                         @enderror
                     </div>
                 </div>
+            </div>
+            <div class="row mt-3 mb-5">
+                <button type="button" class="btn ms-3 ps-0 d-flex justify-content-start align-items-center gap-1">Product Detail Info <i class='bx bxs-down-arrow fs-6' ></i></button>
+
+                <div class="col-12">
+                    <div class="border border-2 border-info rounded p-3">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.presentation') }}</label>
+                                    <input type="text" name="presentation" class="form-control" value="{{ old('presentation', $product->presentation) }}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.group') }}</label>
+                                    <input type="text" name="detail_group" class="form-control" value="{{ old('detail_group', $product->detail_group) }}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.dose') }}</label>
+                                    <input type="text" name="dose" class="form-control" value="{{ old('dose', $product->dose) }}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.indication') }}</label>
+                                    <textarea name="indication" id="indication" cols="30" rows="5" class="form-control cke-editor">{{old('indication', $product->indication)}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-5">
                 <div class="col-lg-8 col-md-12 col-sm-12 col-12">
                     <div class="form-group mb-4">
                         <label for="">{{ __('messages.product.fields.ingredient') }}</label>
@@ -128,8 +164,10 @@
             },
             removedfile: function(file) {
                 file.previewElement.remove();
-                let name = file.file_name || uploadedImageMap[file.name];
+                file.previewElement.remove();
+                let name = file.name || uploadedImageMap[file.name];
                 $('input[name="images[]"][value="' + name + '"]').remove();
+
                 $.ajax({
                     url: "{{ route('admin.products.deleteMedia') }}", // Change this to the appropriate delete route
                     method: "POST",
@@ -146,31 +184,33 @@
                 });
             },
             init: function() {
-                @if (isset($product) && $product->productImages())
-                    var files = {!! json_encode($product->productImages()) !!}
+                @if (isset($product) && $product->getMedia('images')->isNotEmpty())
+                    var files = {!! json_encode($product->getMedia('images')->toArray()) !!};
+                    var server_url = "{{ url('/media/') }}";
 
-                    for (var i in files) {
-                        var server_url = `{{ url('/media/${files[i].order_column}/') }}`;
-                        var file = {
-                            name: files[i].file_name,
-                            size: files[i].size,
+                    files.forEach(file => {
+                        var mockFile = {
+                            name: file.file_name, // Ensure this matches the actual file name attribute
+                            size: file.size,
                             accepted: true
                         };
 
-                        this.files.push(file); // Add the file to Dropzone's files array
-                        this.emit("addedfile", file); // Emit the "addedfile" event
-                        this.emit("thumbnail", file, server_url + '/' + files[i]
-                            .file_name); // Emit the "thumbnail" event
-                        this.emit("complete", file); // Emit the "complete" event
+                        // Add the file to Dropzone's files array
+                        this.files.push(mockFile);
 
-                        $('form').append('<input type="hidden" name="images[]" value="' + files[i].file_name + '">')
-                        uploadedImageMap[file.name] = files[i].file_name
+                        // Emit the Dropzone events
+                        this.emit("addedfile", mockFile);
+                        this.emit("thumbnail", mockFile, server_url + '/' + file.id + '/' + file.file_name);
+                        this.emit("complete", mockFile);
 
-                        // Adjust thumbnail image styles to fit within a container
-                        var thumbnailElement = this.files[i].previewElement.querySelector(".dz-image img");
+                        // Append hidden input to the form
+                        $('form').append('<input type="hidden" name="images[]" value="' + file.file_name + '">');
+
+                        // Ensure the thumbnail image styles are set correctly
+                        var thumbnailElement = mockFile.previewElement.querySelector(".dz-image img");
                         thumbnailElement.style.maxWidth = "100%";
                         thumbnailElement.style.height = "auto";
-                    }
+                    });
                 @endif
 
             },
@@ -179,6 +219,12 @@
         }
 
         $(document).ready(function() {
+            ClassicEditor
+                .create( document.querySelector( '#indication' ) )
+                .catch( error => {
+                console.error( error );
+            });
+
             $(document).on('change', '.category_id', function() {
                 let category_id = $(this).val();
 

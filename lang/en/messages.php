@@ -42,7 +42,10 @@ return [
             'photo' => 'Photo',
             'principle' => 'Principle',
             'category' => 'Category',
-            'group' => 'Group'
+            'group' => 'Group',
+            'presentation' => 'Presentation',
+            'dose' => 'Dose',
+            'indication' => 'Indication'
         ],
     ],
 

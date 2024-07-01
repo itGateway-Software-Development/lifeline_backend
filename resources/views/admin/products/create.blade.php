@@ -23,7 +23,7 @@
                         <label for="">{{ __('messages.product.fields.price') }}</label>
                         <div class="input-group">
                             <span class="input-group-text bg-secondary text-white">MMK</span>
-                            <input type="number" class="form-control" name="price" value="{{ old('price') }}">
+                            <input type="number" class="form-control" name="price" value="{{ old('price', 0) }}">
                         </div>
                     </div>
                 </div>
@@ -73,6 +73,42 @@
                         @enderror
                     </div>
                 </div>
+            </div>
+            <div class="row mt-3 mb-5">
+                <button type="button" class="btn ms-3 ps-0 d-flex justify-content-start align-items-center gap-1">Product Detail Info <i class='bx bxs-down-arrow fs-6' ></i></button>
+
+                <div class="col-12">
+                    <div class="border border-2 border-info rounded p-3">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.presentation') }}</label>
+                                    <input type="text" name="presentation" class="form-control" value="{{ old('presentation') }}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.group') }}</label>
+                                    <input type="text" name="detail_group" class="form-control" value="{{ old('detail_group') }}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.dose') }}</label>
+                                    <input type="text" name="dose" class="form-control" value="{{ old('dose') }}">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group mb-4">
+                                    <label for="">{{ __('messages.product.fields.indication') }}</label>
+                                    <textarea name="indication" id="indication" cols="30" rows="5" class="form-control cke-editor"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="form-group mb-4">
                         <label for="">{{ __('messages.product.fields.ingredient') }}</label>
@@ -157,6 +193,12 @@
         }
 
         $(document).ready(function() {
+            ClassicEditor
+                .create( document.querySelector( '#indication' ) )
+                .catch( error => {
+                console.error( error );
+            });
+
             $(document).on('change', '.category_id', function() {
                 let category_id = $(this).val();
 

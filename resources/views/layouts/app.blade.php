@@ -158,6 +158,9 @@
     {{-- flatpicker  --}}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+    {{-- CKE Editor  --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
 
     @yield('scripts')
 

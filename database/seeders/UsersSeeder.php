@@ -17,7 +17,7 @@ class UsersSeeder extends Seeder
                 'id' => 1,
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
-                'password' => bcrypt('Veeam123!@#'),
+                'password' => bcrypt('Lifeline123!@#'),
                 'remember_token' => null,
             ],
         ];
