@@ -100,7 +100,7 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group mb-4">
                                     <label for="">{{ __('messages.product.fields.dose') }}</label>
-                                    <input type="text" name="dose" class="form-control" value="{{ old('dose', $product->dose) }}">
+                                    <textarea name="dose" id="dose" cols="30" rows="5" class="form-control cke-editor">{{old('dose', $product->dose)}}</textarea>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
@@ -221,6 +221,12 @@
         $(document).ready(function() {
             ClassicEditor
                 .create( document.querySelector( '#indication' ) )
+                .catch( error => {
+                console.error( error );
+            });
+
+            ClassicEditor
+                .create( document.querySelector( '#dose' ) )
                 .catch( error => {
                 console.error( error );
             });
