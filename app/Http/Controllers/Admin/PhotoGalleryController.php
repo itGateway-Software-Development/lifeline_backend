@@ -25,6 +25,9 @@ class PhotoGalleryController extends Controller
             ->editColumn('plus-icon', function ($each) {
                 return null;
             })
+            ->editColumn('title', function($each) {
+                return ucwords($each->title);
+            })
             ->editColumn('photos', function($each) {
                 $image = '';
                 $index = 0;
@@ -117,6 +120,7 @@ class PhotoGalleryController extends Controller
         DB::beginTransaction();
         try {
             $photo_gallery = new PhotoGallery();
+            $photo_gallery->title = $request->title;
             $photo_gallery->date = $request->date;
             $photo_gallery->save();
 
@@ -149,6 +153,7 @@ class PhotoGalleryController extends Controller
     public function update(PhotoGallery $photoGallery, UpdatePhotoGalleryRequest $request) {
         DB::beginTransaction();
         try {
+            $photoGallery->title = $request->title;
             $photoGallery->date = $request->date;
             $photoGallery->update();
 
@@ -170,7 +175,7 @@ class PhotoGalleryController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('admin.photo-gallery.index')->with('success', 'Successfully Created !');
+            return redirect()->route('admin.photo-gallery.index')->with('success', 'Successfully Edited !');
         } catch (\Exception $error) {
             DB::rollback();
             logger($error->getMessage());

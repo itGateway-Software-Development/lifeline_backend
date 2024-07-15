@@ -21,9 +21,9 @@ class UpdatePhotoGalleryRequest extends FormRequest
      */
         public function rules(): array
         {
-            $id = $this->route('photo_gallery')->id;
             return [
-                'date' => 'required|unique:photo_galleries,date,'.$id,
+                'title' => 'required',
+                'date' => 'required',
             ];
         }
 }

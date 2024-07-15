@@ -52,6 +52,7 @@ return [
     'photo_gallery' => [
         'title' => 'Photo Gallery',
         'fields' => [
+            'title' => 'Title',
             'date' => 'Date',
             'photos' => 'Photos',
         ]

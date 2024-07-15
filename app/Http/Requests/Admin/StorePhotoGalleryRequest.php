@@ -22,7 +22,8 @@ class StorePhotoGalleryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|unique:photo_galleries,date',
+            'title' => 'required',
+            'date' => 'required',
             'images' => 'required',
         ];
     }

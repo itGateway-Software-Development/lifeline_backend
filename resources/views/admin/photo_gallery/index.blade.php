@@ -20,6 +20,7 @@
             <table class="table table-bordered table-striped w-100" id="DataTable">
                 <thead>
                     <th class="no-sort"></th>
+                    <th>{{ __('messages.photo_gallery.fields.title') }}</th>
                     <th>{{ __('messages.photo_gallery.fields.date') }}</th>
                     <th class="no-sort">{{ __('messages.photo_gallery.fields.photos') }}</th>
                     <th class="no-sort text-nowrap">Action</th>
@@ -44,6 +45,10 @@
                 columns: [{
                         data: 'plus-icon',
                         name: 'plus-icon'
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
                     },
                     {
                         data: 'date',

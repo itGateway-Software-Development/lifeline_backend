@@ -15,6 +15,18 @@
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                     <div class="form-group mb-4">
+                        <label for="">{{ __('messages.photo_gallery.fields.title') }}</label>
+                        <select name="title" id="" class="form-select select2" data-placeholder="---Please Select---">
+                            <option value=""></option>
+                            <option value="donation" {{$photo_gallery->title == 'donation' ? 'selected' : ''}}>Donation</option>
+                            <option value="soft_skill_training" {{$photo_gallery->title == 'soft_skill_training' ? 'selected' : ''}}>Soft Skill Training</option>
+                            <option value="activities" {{$photo_gallery->title == 'activities' ? 'selected' : ''}}>Activities</option>
+                            <option value="events" {{$photo_gallery->title == 'events' ? 'selected' : ''}}>Events</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="form-group mb-4">
                         <label for="">{{ __('messages.photo_gallery.fields.date') }}</label>
                         <select name="date" id="" class="form-select select2" data-placeholder="---Please Select---">
                             <option value=""></option>
