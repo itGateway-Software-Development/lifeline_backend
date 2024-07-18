@@ -21,4 +21,14 @@ class CsrController extends Controller
 
         return response()->json(['csr' => $csr, 'years' => $years]);
     }
+
+    public function show($id) {
+        $csr = CsrActivity::with('media')->find($id);
+
+        if(is_null($csr)) {
+            return 'error';
+        }
+
+        return response()->json(['csr' => $csr]);
+    }
 }

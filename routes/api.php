@@ -40,4 +40,5 @@ Route::group(['prefix' => 'v1'], function () {
 
     //csr
     Route::get('/csr-activities', [CsrController::class, 'index']);
+    Route::get('/csr-activities/{id}', [CsrController::class, 'show']);
 });
