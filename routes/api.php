@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\Admin\CsrController;
 use App\Http\Controllers\Api\V1\Admin\GroupController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
@@ -36,4 +37,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     //PhotoGalery
     Route::get('/photo-gallery', [PhotoGalleryController::class, 'index']);
+
+    //csr
+    Route::get('/csr-activities', [CsrController::class, 'index']);
 });

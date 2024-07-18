@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Admin\UpdatePhotoGalleryRequest;
-use DataTables;
-use App\Models\PhotoGallery;
+use App\Http\Requests\Admin\UpdateCSRRequest;
+use App\Models\CsrActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\Admin\StorePhotoGalleryRequest;
+use App\Http\Requests\Admin\StoreCSRRequest;
+use DataTables;
 
-class PhotoGalleryController extends Controller
+class CSRController extends Controller
 {
     public function index() {
-        return view('admin.activity.photo_gallery.index');
+        return view('admin.activity.csr.index');
     }
 
-    public function photoGalleryLists()
+    public function csrLists()
     {
-        $data = PhotoGallery::query();
+        $data = CsrActivity::query();
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {
@@ -28,10 +28,13 @@ class PhotoGalleryController extends Controller
             ->editColumn('title', function($each) {
                 return ucwords($each->title);
             })
+            ->editColumn('content', function($each) {
+                return substr($each->content, 0,200) . ' ...';
+            })
             ->editColumn('photos', function($each) {
                 $image = '';
                 $index = 0;
-                foreach ($each->getMedia('photo_gallery') as $file) {
+                foreach ($each->getMedia('csr') as $file) {
                     if ($index < 2) {
                         $filePath = $file->getUrl();
                         $style = "width: 40px; height: 40px; display: flex; justify-content:center; align-items:center ;border-radius: 100%; object-fit: cover; border: 1px solid #333;";
@@ -55,16 +58,16 @@ class PhotoGalleryController extends Controller
                 $edit_icon = '';
                 $del_icon = '';
 
+                $show_icon = '<a href="' . route('admin.csr-activities.show', $each->id) . '" class="text-warning me-3"><i class="bx bxs-show fs-4"></i></a>';
                 if (auth()->user()->can('photo_gallery_show')) {
-                    $show_icon = '<a href="' . route('admin.photo-gallery.show', $each->id) . '" class="text-warning me-3"><i class="bx bxs-show fs-4"></i></a>';
                 }
 
+                $edit_icon = '<a href="' . route('admin.csr-activities.edit', $each->id) . '" class="text-info me-3"><i class="bx bx-edit fs-4" ></i></a>';
                 if (auth()->user()->can('photo_gallery_edit')) {
-                    $edit_icon = '<a href="' . route('admin.photo-gallery.edit', $each->id) . '" class="text-info me-3"><i class="bx bx-edit fs-4" ></i></a>';
                 }
 
+                $del_icon = '<a href="" class="text-danger delete-btn" data-id="' . $each->id . '"><i class="bx bxs-trash-alt fs-4" ></i></a>';
                 if (auth()->user()->can('photo_gallery_delete')) {
-                    $del_icon = '<a href="" class="text-danger delete-btn" data-id="' . $each->id . '"><i class="bx bxs-trash-alt fs-4" ></i></a>';
                 }
 
                 return '<div class="action-icon">' . $show_icon . $edit_icon . $del_icon . '</div>';
@@ -75,14 +78,12 @@ class PhotoGalleryController extends Controller
     }
 
     public function create() {
+
         $currentYear = date('Y');
         $years = range($currentYear, $currentYear - 10);
-        return view('admin.activity.photo_gallery.create', compact('years'));
+        return view('admin.activity.csr.create', compact('years'));
     }
 
-    /**
-     * store images from dropzone
-     */
     public function storeMedia(Request $request)
     {
         $path = storage_path('tmp/uploads');
@@ -115,21 +116,21 @@ class PhotoGalleryController extends Controller
 
     }
 
-    public function store(StorePhotoGalleryRequest $request) {
-
+    public function store(StoreCSRRequest $request) {
         DB::beginTransaction();
         try {
-            $photo_gallery = new PhotoGallery();
-            $photo_gallery->title = $request->title;
-            $photo_gallery->date = $request->date;
-            $photo_gallery->save();
+            $csr = new CsrActivity();
+            $csr->title = $request->title;
+            $csr->date = $request->date;
+            $csr->content = $request->content;
+            $csr->save();
 
             foreach ($request->input('images', []) as $image) {
-                $photo_gallery->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('photo_gallery');
+                $csr->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('csr');
             }
 
             DB::commit();
-            return redirect()->route('admin.photo-gallery.index')->with('success', 'Successfully Created !');
+            return redirect()->route('admin.csr-activities.index')->with('success', 'Successfully Created !');
         } catch (\Exception $error) {
             DB::rollback();
             logger($error->getMessage());
@@ -137,45 +138,45 @@ class PhotoGalleryController extends Controller
         }
     }
 
-    public function show(PhotoGallery $photoGallery) {
-        $photo_gallery = $photoGallery->load('media');
-        return view('admin.activity.photo_gallery.show', compact('photo_gallery'));
+    public function show(CsrActivity $csrActivity) {
+        return view('admin.activity.csr.show', compact('csrActivity'));
     }
 
-    public function edit(PhotoGallery $photoGallery) {
+    public function edit(CsrActivity $csrActivity) {
         $currentYear = date('Y');
         $years = range($currentYear, $currentYear - 10);
-        $photo_gallery = $photoGallery->load('media');
 
-        return view('admin.activity.photo_gallery.edit', compact('years', 'photo_gallery'));
+        $csrActivity = $csrActivity->load('media');
+
+        return view('admin.activity.csr.edit', compact('years', 'csrActivity'));
     }
 
-    public function update(PhotoGallery $photoGallery, UpdatePhotoGalleryRequest $request) {
+    public function update(UpdateCSRRequest $request, CsrActivity $csrActivity) {
         DB::beginTransaction();
         try {
-            $photoGallery->title = $request->title;
-            $photoGallery->date = $request->date;
-            $photoGallery->update();
+            $csrActivity->title = $request->title;
+            $csrActivity->date = $request->date;
+            $csrActivity->content = $request->content;
+            $csrActivity->update();
 
-            if (count($photoGallery->galleryImages()) > 0) {
-                foreach ($photoGallery->galleryImages() as $media) {
+            if (count($csrActivity->csrImages()) > 0) {
+                foreach ($csrActivity->csrImages() as $media) {
                     if (!in_array($media->file_name, $request->input('images', []))) {
-                        logger($media);
                         $media->delete();
                     }
                 }
             }
 
-            $media = $photoGallery->galleryImages()->pluck('file_name')->toArray();
+            $media = $csrActivity->csrImages()->pluck('file_name')->toArray();
 
             foreach ($request->input('images', []) as $file) {
                 if (count($media) === 0 || !in_array($file, $media)) {
-                    $photoGallery->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('photo_gallery');
+                    $csrActivity->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('csr');
                 }
             }
 
             DB::commit();
-            return redirect()->route('admin.photo-gallery.index')->with('success', 'Successfully Edited !');
+            return redirect()->route('admin.csr-activities.index')->with('success', 'Successfully Updated !');
         } catch (\Exception $error) {
             DB::rollback();
             logger($error->getMessage());
@@ -183,11 +184,11 @@ class PhotoGalleryController extends Controller
         }
     }
 
-    public function destroy(PhotoGallery $photoGallery) {
+    public function destroy(CsrActivity $csrActivity) {
         DB::beginTransaction();
 
         try {
-            $photoGallery->delete();
+            $csrActivity->delete();
 
             DB::commit();
             return 'success';

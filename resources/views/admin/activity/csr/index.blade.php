@@ -1,28 +1,29 @@
 @extends('layouts.app')
-@section('title', 'Photo Gallery')
+@section('title', 'CSR Activity')
 
 @section('content')
     <div class="card-head-icon">
-        <i class='bx bxs-photo-album' style="color: rgb(62, 136, 62);"></i>
-        <div>{{ __('messages.photo_gallery.title') }}</div>
+        <i class='bx bxs-spa' style="color: rgb(62, 136, 62);"></></i>
+        <div>{{ __('messages.csr.title') }}</div>
     </div>
 
     <div class="card mt-3">
         <div class="d-flex justify-content-between m-3">
-            <span>{{ __('messages.photo_gallery.title') }} List</span>
+            <span>{{ __('messages.csr.title') }} List</span>
             @can('user_create')
-                <a href="{{ route('admin.photo-gallery.create') }}" class="btn btn-primary text-decoration-none text-white"><i
+                <a href="{{ route('admin.csr-activities.create') }}" class="btn btn-primary text-decoration-none text-white"><i
                         class='bx bxs-plus-circle me-2'></i>
-                    Create New {{ __('messages.photo_gallery.title') }}</a>
+                    Create New {{ __('messages.csr.title') }}</a>
             @endcan
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped w-100" id="DataTable">
                 <thead>
                     <th class="no-sort"></th>
-                    <th>{{ __('messages.photo_gallery.fields.title') }}</th>
-                    <th>{{ __('messages.photo_gallery.fields.date') }}</th>
-                    <th class="no-sort">{{ __('messages.photo_gallery.fields.photos') }}</th>
+                    <th>{{ __('messages.csr.fields.title') }}</th>
+                    <th>{{ __('messages.csr.fields.date') }}</th>
+                    <th>{{ __('messages.csr.fields.content') }}</th>
+                    <th class="no-sort">{{ __('messages.csr.fields.photos') }}</th>
                     <th class="no-sort text-nowrap">Action</th>
                 </thead>
                 <tbody>
@@ -41,7 +42,7 @@
                 processing: true,
                 responsive: true,
                 serverSide: true,
-                ajax: '/admin/photo-gallery-list',
+                ajax: '/admin/activity/csr-activities-list',
                 columns: [{
                         data: 'plus-icon',
                         name: 'plus-icon'
@@ -53,6 +54,10 @@
                     {
                         data: 'date',
                         name: 'date'
+                    },
+                    {
+                        data: 'content',
+                        name: 'content'
                     },
                     {
                         data: 'photos',
@@ -87,7 +92,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "/admin/photo-gallery/" + id,
+                            url: "/admin/activity/csr-activities/" + id,
                             type: "DELETE",
                             data: {
                                 _token: "{{ csrf_token() }}"

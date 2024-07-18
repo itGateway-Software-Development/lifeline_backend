@@ -56,5 +56,16 @@ return [
             'date' => 'Date',
             'photos' => 'Photos',
         ]
-    ]
+        ],
+
+        'csr' => [
+            'title' => 'CSR Activity',
+            'fields' => [
+                'title' => 'CSR Activity',
+                'csr_title' => 'Title',
+                'date' => 'Year',
+                'content' => 'Content',
+                'photos' => 'Photos'
+            ]
+        ]
 ];

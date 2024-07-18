@@ -122,7 +122,7 @@
         @endcan
         @can('activity_management_access')
             <li
-                class="menu-item {{ request()->is('admin/photo-gallery') || request()->is('admin/photo-gallery/*') ? 'active open' : '' }}">
+                class="menu-item {{ request()->is('admin/activity') || request()->is('admin/activity/*') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class='menu-icon tf-icons bx bxs-landscape' ></i>
                     <div data-i18n="Account Settings">Activity Management</div>
@@ -130,12 +130,18 @@
                 <ul class="menu-sub">
                     @can('photo_gallery_access')
                         <li
-                            class="menu-item {{ request()->is('admin/photo-gallery') || request()->is('admin/photo-gallery/*') ? 'active open' : '' }}">
+                            class="menu-item {{ request()->is('admin/activity/photo-gallery') || request()->is('admin/activity/photo-gallery/*') ? 'active open' : '' }}">
                             <a href="{{ route('admin.photo-gallery.index') }}" class="menu-link">
                                 <div data-i18n="Account">{{ __('messages.photo_gallery.title') }}</div>
                             </a>
                         </li>
                     @endcan
+                    <li
+                        class="menu-item {{ request()->is('admin/activity/csr-activities') || request()->is('admin/activity/csr-activities/*') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.csr-activities.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('messages.csr.title') }}</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endcan

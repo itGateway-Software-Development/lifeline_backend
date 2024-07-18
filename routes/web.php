@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CSRController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -62,11 +63,19 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/product-get-group', [ProductController::class, 'getGroup'])->name('product.get-group');
     Route::resource('products', ProductController::class);
 
-    //photo gallery
-    Route::get('/photo-gallery-list', [PhotoGalleryController::class, 'photoGalleryLists']);
-    Route::post('/photo-gallery/storeMedia', [PhotoGalleryController::class, 'storeMedia'])->name('photo-gallery.storeMedia');
-    Route::post('/photo-gallery/deleteMedia', [PhotoGalleryController::class, 'deleteMedia'])->name('photo-gallery.deleteMedia');
-    Route::resource('photo-gallery', PhotoGalleryController::class);
+    Route::group(['prefix' => 'activity'], function() {
+        //photo gallery
+        Route::get('/photo-gallery-list', [PhotoGalleryController::class, 'photoGalleryLists']);
+        Route::post('/photo-gallery/storeMedia', [PhotoGalleryController::class, 'storeMedia'])->name('photo-gallery.storeMedia');
+        Route::post('/photo-gallery/deleteMedia', [PhotoGalleryController::class, 'deleteMedia'])->name('photo-gallery.deleteMedia');
+        Route::resource('photo-gallery', PhotoGalleryController::class);
+
+        // csr activities
+        Route::get('/csr-activities-list', [CSRController::class, 'csrLists']);
+        Route::post('/csr-activities/storeMedia', [CSRController::class, 'storeMedia'])->name('csr-activities.storeMedia');
+        Route::post('/csr-activities/deleteMedia', [CSRController::class, 'deleteMedia'])->name('csr-activities.deleteMedia');
+        Route::resource('csr-activities', CSRController::class);
+    });
 });
 
 require __DIR__ . '/auth.php';
