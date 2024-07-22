@@ -11,9 +11,9 @@ class CsrController extends Controller
     public function index(Request $request) {
 
         if($request->has('date')) {
-            $csr = CsrActivity::with('media')->where('date', $request->date)->get();
+            $csr = CsrActivity::with('media')->where('date', $request->date)->orderBy('date', 'desc')->get();
         } else {
-            $csr = CsrActivity::with('media')->get();
+            $csr = CsrActivity::with('media')->orderBy('date', 'desc')->get();
         }
 
         $currentYear = date('Y');
