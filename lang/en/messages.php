@@ -15,6 +15,7 @@ return [
         'title' => 'Group',
         'fields' => [
             'name' => 'Name',
+            'photo' => 'Photo'
         ],
     ],
 

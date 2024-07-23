@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreGroupRequest;
-use App\Http\Requests\Admin\UpdateGroupRequest;
+use DataTables;
 use App\Models\Group;
 use Illuminate\Http\Request;
-use DataTables;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\StoreGroupRequest;
+use App\Http\Requests\Admin\UpdateGroupRequest;
 
 class GroupController extends Controller
 {
@@ -21,11 +23,16 @@ class GroupController extends Controller
 
     public function dataTable()
     {
-        $data = Group::query();
+        $data = Group::orderBy('created_at', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {
                 return null;
+            })
+            ->editColumn('photo', function($each) {
+                $url = url("/storage/images/$each->photo");
+                $image = "<img src='$url' style='width: 200px;' />";
+                return $image;
             })
             ->addColumn('action', function ($each) {
                 $edit_icon = '';
@@ -41,7 +48,7 @@ class GroupController extends Controller
 
                 return '<div class="action-icon">' . $edit_icon . $del_icon . '</div>';
             })
-            ->rawColumns(['role', 'action'])
+            ->rawColumns(['role', 'photo', 'action'])
             ->make(true);
 
     }
@@ -59,11 +66,26 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
-        $group = new Group();
-        $group->name = $request->name;
-        $group->save();
+        DB::beginTransaction();
 
-        return redirect()->route('admin.groups.index')->with('success', 'Successfully crated !');
+        try {
+            $group = new Group();
+            $group->name = $request->name;
+            $group->save();
+
+            if ($request->file('photo')) {
+                $fileName = uniqid() . $request->file('photo')->getClientOriginalName();
+                $request->file('photo')->storeAs('public/images/', $fileName);
+
+                $group->photo = $fileName;
+                $group->update();
+            }
+            DB::commit();
+            return redirect()->route('admin.groups.index')->with('success', 'Successfully crated !');
+        }catch(\Exception $error) {
+            DB::rollBack();
+            return redirect()->back()->with('fail', 'Something wrong !');
+        }
     }
 
     /**
@@ -87,10 +109,31 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
-        $group->name = $request->name;
-        $group->update();
+        DB::beginTransaction();
+        try{
+            $group->name = $request->name;
+            $group->update();
 
-        return redirect()->route('admin.groups.index')->with('success', 'Successfully edited !');
+            $oldPhoto = $group->photo;
+
+            if ($request->file('photo')) {
+                if ($oldPhoto) {
+                    Storage::disk('public')->delete('images/' . $oldPhoto);
+                }
+
+                $newPhoto = uniqid() . $request->file('photo')->getClientOriginalName();
+                $request->file('photo')->storeAs('public/images/', $newPhoto);
+
+                $group->photo = $newPhoto;
+                $group->update();
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.groups.index')->with('success', 'Successfully edited !');
+        } catch(\Exception $error) {
+            return redirect()->back()->with('fail', 'Something wrong !');
+        }
     }
 
     /**

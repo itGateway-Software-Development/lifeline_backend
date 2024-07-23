@@ -21,6 +21,7 @@
                 <thead>
                     <th class="no-sort"></th>
                     <th>{{ __('messages.group.fields.name') }}</th>
+                    <th>{{ __('messages.group.fields.photo') }}</th>
                     <th class="no-sort text-nowrap">Action</th>
                 </thead>
                 <tbody>
@@ -47,6 +48,10 @@
                     {
                         data: 'name',
                         name: 'name'
+                    },
+                    {
+                        data: 'photo',
+                        name: 'photo'
                     },
                     {
                         data: 'action',
