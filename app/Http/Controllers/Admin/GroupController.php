@@ -141,6 +141,7 @@ class GroupController extends Controller
      */
     public function destroy(Group $group)
     {
+        Storage::disk('public')->delete('images/' . $group->photo);
         $group->delete();
     }
 }
