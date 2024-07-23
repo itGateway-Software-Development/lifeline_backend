@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Admin\CsrController;
 use App\Http\Controllers\Api\V1\Admin\GroupController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\NewEventController;
 use App\Http\Controllers\Api\V1\Admin\PhotoGalleryController;
 
 /*
@@ -41,4 +42,8 @@ Route::group(['prefix' => 'v1'], function () {
     //csr
     Route::get('/csr-activities', [CsrController::class, 'index']);
     Route::get('/csr-activities/{id}', [CsrController::class, 'show']);
+
+    //news-events
+    Route::get('/news-events', [NewEventController::class, 'index']);
+    Route::get('/news-events/{id}', [NewEventController::class, 'show']);
 });
