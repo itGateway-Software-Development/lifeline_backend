@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CSRController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\IngredientController;
+use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\NewEventController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PhotoGalleryController;
 use App\Http\Controllers\Admin\PrincipleController;
@@ -56,6 +58,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::get('/ingredient-datatable', [IngredientController::class, 'dataTable']);
     Route::resource('ingredients', IngredientController::class);
 
+    //media photo upload
+    Route::post('/media/storeMedia', [MediaController::class, 'storeMedia'])->name('media.storeMedia');
+    Route::post('/media/deleteMedia', [MediaController::class, 'deleteMedia'])->name('media.deleteMedia');
+
     //products
     Route::get('/product-datatable', [ProductController::class, 'dataTable']);
     Route::post('/products/storeMedia', [ProductController::class, 'storeMedia'])->name('products.storeMedia');
@@ -75,6 +81,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::post('/csr-activities/storeMedia', [CSRController::class, 'storeMedia'])->name('csr-activities.storeMedia');
         Route::post('/csr-activities/deleteMedia', [CSRController::class, 'deleteMedia'])->name('csr-activities.deleteMedia');
         Route::resource('csr-activities', CSRController::class);
+
+        // new & events
+        Route::get('/new-events-list', [NewEventController::class, 'newsList']);
+        Route::resource('new-events', NewEventController::class);
     });
 });
 

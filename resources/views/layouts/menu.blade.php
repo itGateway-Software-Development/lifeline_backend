@@ -142,6 +142,12 @@
                             <div data-i18n="Account">{{ __('messages.csr.title') }}</div>
                         </a>
                     </li>
+                    <li
+                        class="menu-item {{ request()->is('admin/activity/new-events') || request()->is('admin/activity/new-events/*') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.new-events.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('messages.news.title') }}</div>
+                        </a>
+                    </li>
                 </ul>
             </li>
         @endcan

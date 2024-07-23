@@ -68,5 +68,16 @@ return [
                 'content' => 'Content',
                 'photos' => 'Photos'
             ]
+        ],
+
+        'news' => [
+            'title' => 'New & Events',
+            'fields' => [
+                'title' => 'New & Events',
+                'news_title' => 'Title',
+                'date' => 'Date',
+                'content' => 'Content',
+                'photos' => 'Photos'
+            ]
         ]
 ];

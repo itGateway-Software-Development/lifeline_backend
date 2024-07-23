@@ -31,7 +31,7 @@ class GroupController extends Controller
             })
             ->editColumn('photo', function($each) {
                 $url = url("/storage/images/$each->photo");
-                $image = "<img src='$url' style='width: 200px;' />";
+                $image = "<img src='$url' style='width: 100px;' />";
                 return $image;
             })
             ->addColumn('action', function ($each) {
