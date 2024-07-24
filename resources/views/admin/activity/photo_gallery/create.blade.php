@@ -18,8 +18,8 @@
                         <select name="title" id="" class="form-select select2" data-placeholder="---Please Select---">
                             <option value=""></option>
                             <option value="donation">Donation</option>
-                            <option value="soft_skill_training">Soft Skill Training</option>
-                            <option value="activities">Activities</option>
+                            <option value="csr">CSR</option>
+                            <option value="academic_acitivity">Academic Activities</option>
                             <option value="events">Events</option>
                         </select>
                     </div>

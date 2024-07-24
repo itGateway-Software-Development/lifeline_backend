@@ -19,8 +19,8 @@
                         <select name="title" id="" class="form-select select2" data-placeholder="---Please Select---">
                             <option value=""></option>
                             <option value="donation" {{$photo_gallery->title == 'donation' ? 'selected' : ''}}>Donation</option>
-                            <option value="soft_skill_training" {{$photo_gallery->title == 'soft_skill_training' ? 'selected' : ''}}>Soft Skill Training</option>
-                            <option value="activities" {{$photo_gallery->title == 'activities' ? 'selected' : ''}}>Activities</option>
+                            <option value="csr" {{$photo_gallery->title == 'csr' ? 'selected' : ''}}>CSR</option>
+                            <option value="academic_acitivity" {{$photo_gallery->title == 'academic_acitivity' ? 'selected' : ''}}>Academic Activities</option>
                             <option value="events" {{$photo_gallery->title == 'events' ? 'selected' : ''}}>Events</option>
                         </select>
                     </div>

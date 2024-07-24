@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Admin\CsrController;
 use App\Http\Controllers\Api\V1\Admin\GroupController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
+use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\NewEventController;
+use App\Http\Controllers\Api\V1\Admin\PromotionController;
 use App\Http\Controllers\Api\V1\Admin\PhotoGalleryController;
 
 /*
@@ -46,4 +48,10 @@ Route::group(['prefix' => 'v1'], function () {
     //news-events
     Route::get('/news-events', [NewEventController::class, 'index']);
     Route::get('/news-events/{id}', [NewEventController::class, 'show']);
+
+    //service
+    Route::get('/services', [ServiceController::class, 'index']);
+
+    //promotion
+    Route::get('/promotions', [PromotionController::class, 'index']);
 });

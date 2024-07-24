@@ -1,19 +1,21 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PromotionController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CSRController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\GroupController;
-use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\NewEventController;
+use App\Http\Controllers\Admin\PrincipleController;
+use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PhotoGalleryController;
-use App\Http\Controllers\Admin\PrincipleController;
-use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\RolesController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +87,18 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
         // new & events
         Route::get('/new-events-list', [NewEventController::class, 'newsList']);
         Route::resource('new-events', NewEventController::class);
+    });
+
+    Route::group(['prefix' => 'company-setting'], function() {
+        //service
+        Route::get('/services-list', [ServiceController::class, 'serviceLists']);
+        Route::get('/change-service-status', [ServiceController::class, 'changeStatus']);
+        Route::resource('services', ServiceController::class);
+
+        //promotion
+        Route::get('/promotions-list', [PromotionController::class, 'promotionLists']);
+        Route::get('/change-promotions-status', [PromotionController::class, 'changeStatus']);
+        Route::resource('promotions', PromotionController::class);
     });
 });
 

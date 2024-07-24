@@ -79,5 +79,27 @@ return [
                 'content' => 'Content',
                 'photos' => 'Photos'
             ]
-        ]
+        ],
+
+        'services' => [
+            'title' => 'Services',
+            'fields' => [
+                'title' => 'Services',
+                'service_title' => 'Title',
+                'content' => 'Content',
+                'status' => 'Status',
+            ]
+        ],
+
+        'promotions' => [
+            'title' => 'Promotions',
+            'fields' => [
+                'title' => 'Promotions',
+                'promotion_title' => 'Title',
+                'content' => 'Content',
+                'status' => 'Status',
+                'main_img' => 'Main Image',
+                'info_img' => 'Information Image'
+            ]
+        ],
 ];

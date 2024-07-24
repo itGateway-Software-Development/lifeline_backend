@@ -151,5 +151,27 @@
                 </ul>
             </li>
         @endcan
+        <li
+                class="menu-item {{ request()->is('admin/company-setting') || request()->is('admin/company-setting/*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class='menu-icon tf-icons bx bxs-category-alt' ></i>
+                    <div data-i18n="Account Settings">Company Setting</div>
+                </a>
+                <ul class="menu-sub">
+                    <li
+                        class="menu-item {{ request()->is('admin/company-setting/services') || request()->is('admin/company-setting/services/*') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.services.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('messages.services.title') }}</div>
+                        </a>
+                    </li>
+
+                    <li
+                        class="menu-item {{ request()->is('admin/company-setting/promotions') || request()->is('admin/company-setting/promotions/*') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.promotions.index') }}" class="menu-link">
+                            <div data-i18n="Account">{{ __('messages.promotions.title') }}</div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
     </ul>
 </aside>
