@@ -35,7 +35,7 @@ class CsrController extends Controller
     }
 
     public function getCsrPhotos() {
-        $csrs = CsrActivity::with('media')->latest()->take(6)->get();
+        $csrs = CsrActivity::with('media')->inRandomOrder()->take(6)->get();
         $photos = [];
 
         foreach($csrs as $csr) {
