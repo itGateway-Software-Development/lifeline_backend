@@ -44,6 +44,7 @@ Route::group(['prefix' => 'v1'], function () {
     //csr
     Route::get('/csr-activities', [CsrController::class, 'index']);
     Route::get('/csr-activities/{id}', [CsrController::class, 'show']);
+    Route::get('/get-csr-photos', [CsrController::class, 'getCsrPhotos']);
 
     //news-events
     Route::get('/news-events', [NewEventController::class, 'index']);
@@ -54,4 +55,5 @@ Route::group(['prefix' => 'v1'], function () {
 
     //promotion
     Route::get('/promotions', [PromotionController::class, 'index']);
+
 });
