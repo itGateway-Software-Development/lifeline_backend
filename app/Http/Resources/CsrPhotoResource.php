@@ -15,7 +15,7 @@ class CsrPhotoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'url' => url("media/$this->file_name"),
+            'url' => url("media/$this->order_column/$this->file_name"),
         ];
     }
 }

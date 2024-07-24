@@ -35,7 +35,7 @@ class CsrController extends Controller
     }
 
     public function getCsrPhotos() {
-        $photos = DB::table('media')->where('collection_name', 'csr')->take(6)->get();
+        $photos = DB::table('media')->where('collection_name', 'csr')->latest()->take(6)->get();
 
         return response()->json(['photos' => CsrPhotoResource::collection($photos)]);
     }
