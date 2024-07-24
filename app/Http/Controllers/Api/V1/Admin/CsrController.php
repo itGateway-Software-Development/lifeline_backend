@@ -35,8 +35,17 @@ class CsrController extends Controller
     }
 
     public function getCsrPhotos() {
-        $photos = DB::table('media')->where('collection_name', 'csr')->latest()->take(6)->get();
+        $csrs = CsrActivity::with('media')->latest()->take(6)->get();
+        $photos = [];
 
-        return response()->json(['photos' => CsrPhotoResource::collection($photos)]);
+        foreach($csrs as $csr) {
+            foreach($csr->media as $media) {
+                if(count($photos) < 7) {
+                    array_push($photos, $media->original_url);
+                }
+            }
+        }
+
+        return response()->json(['photos' => $photos]);
     }
 }
