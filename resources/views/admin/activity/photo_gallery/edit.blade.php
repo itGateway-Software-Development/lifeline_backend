@@ -18,9 +18,9 @@
                         <label for="">{{ __('messages.photo_gallery.fields.title') }}</label>
                         <select name="title" id="" class="form-select select2" data-placeholder="---Please Select---">
                             <option value=""></option>
-                            <option value="donation" {{$photo_gallery->title == 'donation' ? 'selected' : ''}}>Donation</option>
-                            <option value="csr" {{$photo_gallery->title == 'csr' ? 'selected' : ''}}>CSR</option>
                             <option value="academic_acitivity" {{$photo_gallery->title == 'academic_acitivity' ? 'selected' : ''}}>Academic Activities</option>
+                            <option value="csr" {{$photo_gallery->title == 'csr' ? 'selected' : ''}}>CSR</option>
+                            <option value="donation" {{$photo_gallery->title == 'donation' ? 'selected' : ''}}>Donation</option>
                             <option value="events" {{$photo_gallery->title == 'events' ? 'selected' : ''}}>Events</option>
                         </select>
                     </div>

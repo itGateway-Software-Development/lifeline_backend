@@ -17,9 +17,9 @@
                         <label for="">{{ __('messages.photo_gallery.fields.title') }}</label>
                         <select name="title" id="" class="form-select select2" data-placeholder="---Please Select---">
                             <option value=""></option>
-                            <option value="donation">Donation</option>
-                            <option value="csr">CSR</option>
                             <option value="academic_acitivity">Academic Activities</option>
+                            <option value="csr">CSR</option>
+                            <option value="donation">Donation</option>
                             <option value="events">Events</option>
                         </select>
                     </div>
