@@ -86,7 +86,7 @@ return [
             'fields' => [
                 'title' => 'Academic Activities',
                 'academic_title' => 'Title',
-                'link' => 'Youtube Video Link',
+                'link' => 'Short Video Link',
                 'full_link' => 'Full Video Link'
             ]
         ],

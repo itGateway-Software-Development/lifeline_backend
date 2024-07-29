@@ -22,6 +22,7 @@
                     <th class="no-sort"></th>
                     <th>{{ __('messages.academic.fields.title') }}</th>
                     <th>{{ __('messages.academic.fields.link') }}</th>
+                    <th>{{ __('messages.academic.fields.full_link') }}</th>
                     <th class="no-sort text-nowrap">Action</th>
                 </thead>
                 <tbody>
@@ -52,6 +53,10 @@
                     {
                         data: 'link',
                         name: 'link'
+                    },
+                    {
+                        data: 'full_link',
+                        name: 'full_link'
                     },
                     {
                         data: 'action',

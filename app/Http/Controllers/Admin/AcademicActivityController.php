@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AcademicActivity;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\StoreAcademicActivityRequest;
 use App\Http\Requests\Admin\UpdateAcademicActivityRequest;
 
@@ -28,7 +29,14 @@ class AcademicActivityController extends Controller
                 return ucwords($each->title);
             })
             ->editColumn('link', function($each) {
-                return substr($each->link, 0,200) . ' ...';
+                $url = url("/storage/videos/$each->link");
+                $video = "
+                    <video controls width='250'>
+                        <source src='$url' type='video/mp4' />
+                    </video>
+                ";
+
+                return $video;
             })
 
             ->addColumn('action', function ($each) {
@@ -51,7 +59,7 @@ class AcademicActivityController extends Controller
 
                 return '<div class="action-icon text-nowrap">' . $edit_icon . $del_icon . '</div>';
             })
-            ->rawColumns(['photos', 'action'])
+            ->rawColumns(['link', 'action'])
             ->make(true);
 
     }
@@ -61,13 +69,31 @@ class AcademicActivityController extends Controller
     }
 
     public function store(StoreAcademicActivityRequest $request) {
-        $academic = new AcademicActivity();
-        $academic->title = $request->title;
-        $academic->link = $request->link;
-        $academic->full_link = $request->full_link;
-        $academic->save();
 
-        return redirect()->route('admin.academic-activities.index')->with('success', 'Successfully Created !');
+        DB::beginTransaction();
+
+        try {
+            $academic = new AcademicActivity();
+            $academic->title = $request->title;
+            $academic->link = '';
+            $academic->full_link = $request->full_link;
+            $academic->save();
+
+            if ($request->file('link')) {
+                $fileName = uniqid() . $request->file('link')->getClientOriginalName();
+                $request->file('link')->storeAs('public/videos/', $fileName);
+
+                $academic->link = $fileName;
+                $academic->update();
+            }
+            DB::commit();
+            return redirect()->route('admin.academic-activities.index')->with('success', 'Successfully Created !');
+
+        }catch(\Exception $error) {
+            DB::rollBack();
+            return redirect()->back()->with('fail', 'Something wrong !');
+        }
+
     }
 
     public function edit(AcademicActivity $academicActivity) {
@@ -75,12 +101,33 @@ class AcademicActivityController extends Controller
     }
 
     public function update(UpdateAcademicActivityRequest $request, AcademicActivity $academicActivity) {
-        $academicActivity->title = $request->title;
-        $academicActivity->link = $request->link;
-        $academicActivity->full_link = $request->full_link;
-        $academicActivity->save();
 
-        return redirect()->route('admin.academic-activities.index')->with('success', 'Successfully Updated !');
+        DB::beginTransaction();
+        try{
+            $academicActivity->title = $request->title;
+            $academicActivity->full_link = $request->full_link;
+            $academicActivity->update();
+
+            $oldLink = $academicActivity->link;
+
+            if ($request->file('link')) {
+                if ($oldLink) {
+                    Storage::disk('public')->delete('videos/' . $oldLink);
+                }
+
+                $newLink = uniqid() . $request->file('link')->getClientOriginalName();
+                $request->file('link')->storeAs('public/videos/', $newLink);
+
+                $academicActivity->link = $newLink;
+                $academicActivity->update();
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.academic-activities.index')->with('success', 'Successfully Updated !');
+        } catch(\Exception $error) {
+            return redirect()->back()->with('fail', 'Something wrong !');
+        }
     }
 
     public function destroy(AcademicActivity $academicActivity) {

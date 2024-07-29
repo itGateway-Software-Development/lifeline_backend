@@ -9,7 +9,7 @@
     <div class="card mt-3 p-4">
         <span class="mb-4">{{ __('messages.academic.title') }} Creation</span>
 
-        <form action="{{ route('admin.academic-activities.store') }}" method="post" id="academic_create">
+        <form action="{{ route('admin.academic-activities.store') }}" method="post" id="academic_create" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12 col-12">
@@ -21,7 +21,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 col-12">
                     <div class="form-group mb-4">
                         <label for="">{{ __('messages.academic.fields.link') }} <span class="text-danger">*</span></label>
-                        <textarea name="link" id="" cols="30" rows="5" class="form-control link" placeholder="Enter youtube video link ...">{{old('link')}}</textarea>
+                        <input type="file" class="form-control link" name="link">
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12 col-12">

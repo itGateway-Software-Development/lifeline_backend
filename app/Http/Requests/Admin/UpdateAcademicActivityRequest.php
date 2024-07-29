@@ -23,7 +23,6 @@ class UpdateAcademicActivityRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'link' => 'required',
             'full_link' => 'required',
         ];
     }
