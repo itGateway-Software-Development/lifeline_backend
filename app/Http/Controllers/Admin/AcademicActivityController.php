@@ -134,6 +134,7 @@ class AcademicActivityController extends Controller
         DB::beginTransaction();
 
         try {
+            Storage::disk('public')->delete('videos/' . $academicActivity->link);
             $academicActivity->delete();
 
             DB::commit();
