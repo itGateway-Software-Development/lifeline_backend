@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AcademicActivityController;
 use App\Http\Controllers\Admin\PromotionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -87,6 +88,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
         // new & events
         Route::get('/new-events-list', [NewEventController::class, 'newsList']);
         Route::resource('new-events', NewEventController::class);
+
+        // academic activities
+        Route::get('/academic-activities-list', [AcademicActivityController::class, 'academicActivityList']);
+        Route::resource('academic-activities', AcademicActivityController::class);
     });
 
     Route::group(['prefix' => 'company-setting'], function() {

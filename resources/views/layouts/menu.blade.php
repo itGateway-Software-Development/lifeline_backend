@@ -148,6 +148,12 @@
                             <div data-i18n="Account">{{ __('messages.news.title') }}</div>
                         </a>
                     </li>
+                    <li
+                    class="menu-item {{ request()->is('admin/activity/academic-activities') || request()->is('admin/activity/academic-activities/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.academic-activities.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.academic.title') }}</div>
+                    </a>
+                </li>
                 </ul>
             </li>
         @endcan

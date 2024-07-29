@@ -81,6 +81,16 @@ return [
             ]
         ],
 
+        'academic' => [
+            'title' => 'Academic Activities',
+            'fields' => [
+                'title' => 'Academic Activities',
+                'academic_title' => 'Title',
+                'link' => 'Youtube Video Link',
+                'full_link' => 'Full Video Link'
+            ]
+        ],
+
         'services' => [
             'title' => 'Services',
             'fields' => [

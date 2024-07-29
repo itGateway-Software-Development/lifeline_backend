@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Admin\CategoryController;
 use App\Http\Controllers\Api\V1\Admin\NewEventController;
 use App\Http\Controllers\Api\V1\Admin\PromotionController;
 use App\Http\Controllers\Api\V1\Admin\PhotoGalleryController;
+use App\Http\Controllers\Api\V1\Admin\AcademicActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,5 +56,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     //promotion
     Route::get('/promotions', [PromotionController::class, 'index']);
+
+    //academic activity
+    Route::get('/academic-activities', [AcademicActivityController::class, 'index']);
 
 });
