@@ -9,8 +9,10 @@ use App\Http\Controllers\Controller;
 
 class GroupController extends Controller
 {
-    public function index() {
-        $groups = Group::all();
+    public function index(Request $request) {
+
+        $keyword = $request->keyword;
+        $groups = Group::where('name', 'like', "%$keyword%")->get();
 
         return response()->json(['groups' => GroupResource::collection($groups)]);
     }
