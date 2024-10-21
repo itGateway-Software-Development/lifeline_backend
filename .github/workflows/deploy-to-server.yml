@@ -1,4 +1,4 @@
-name: Deploy Application
+name: Deploy
 
 on:
   push:
@@ -8,15 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout the files
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-          REMOTE_HOST: ${{secrets.HOST}}
-          REMOTE_USER: ${{secrets.USERNAME}}
-          TARGET: ${{secrets.TARGET_DIR}}
+      - name: Set up SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: "cd /root/deploy && ./admin.sh"
