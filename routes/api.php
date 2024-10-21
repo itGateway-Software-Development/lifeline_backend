@@ -4,10 +4,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Admin\CsrController;
 use App\Http\Controllers\Api\V1\Admin\GroupController;
+use App\Http\Controllers\Api\V1\Admin\CareerController;
 use App\Http\Controllers\Api\V1\Admin\ProductController;
 use App\Http\Controllers\Api\V1\Admin\ServiceController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\LocationController;
 use App\Http\Controllers\Api\V1\Admin\NewEventController;
+use App\Http\Controllers\Api\V1\Admin\PositionController;
 use App\Http\Controllers\Api\V1\Admin\PromotionController;
 use App\Http\Controllers\Api\V1\Admin\PhotoGalleryController;
 use App\Http\Controllers\Api\V1\Admin\AcademicActivityController;
@@ -59,5 +62,14 @@ Route::group(['prefix' => 'v1'], function () {
 
     //academic activity
     Route::get('/academic-activities', [AcademicActivityController::class, 'index']);
+
+    //career
+    Route::group(['prefix' => 'career'], function () {
+        Route::get('/locations', [LocationController::class, 'index']);
+        Route::get('/positions', [PositionController::class, 'index']);
+        Route::get('/careers', [CareerController::class, 'index']);
+        Route::post('/submit-cv', [CareerController::class, 'submitCv']);
+    });
+
 
 });
