@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AcademicActivityController;
-use App\Http\Controllers\Admin\PromotionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\CSRController;
@@ -9,14 +7,20 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\CareerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\NewEventController;
+use App\Http\Controllers\Admin\PositionController;
 use App\Http\Controllers\Admin\PrincipleController;
+use App\Http\Controllers\Admin\PromotionController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PhotoGalleryController;
+use App\Http\Controllers\Admin\AcademicActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +108,25 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
         Route::get('/promotions-list', [PromotionController::class, 'promotionLists']);
         Route::get('/change-promotions-status', [PromotionController::class, 'changeStatus']);
         Route::resource('promotions', PromotionController::class);
+    });
+
+    Route::group(['prefix' => 'career-setting'], function() {
+        //location
+        Route::get('/locations-list', [LocationController::class, 'locationLists']);
+        Route::resource('locations', LocationController::class);
+
+        //position
+        Route::get('/positions-list', [PositionController::class, 'positionLists']);
+        Route::resource('positions', PositionController::class);
+
+        //department
+        Route::get('/departments-list', [DepartmentController::class, 'departmentLists']);
+        Route::resource('departments', DepartmentController::class);
+
+        //career
+        Route::get('/careers-list', [CareerController::class, 'careerLists']);
+        Route::resource('careers', CareerController::class);
+
     });
 });
 

@@ -158,26 +158,63 @@
             </li>
         @endcan
         <li
-                class="menu-item {{ request()->is('admin/company-setting') || request()->is('admin/company-setting/*') ? 'active open' : '' }}">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class='menu-icon tf-icons bx bxs-category-alt' ></i>
-                    <div data-i18n="Account Settings">Company Setting</div>
-                </a>
-                <ul class="menu-sub">
-                    <li
-                        class="menu-item {{ request()->is('admin/company-setting/services') || request()->is('admin/company-setting/services/*') ? 'active open' : '' }}">
-                        <a href="{{ route('admin.services.index') }}" class="menu-link">
-                            <div data-i18n="Account">{{ __('messages.services.title') }}</div>
-                        </a>
-                    </li>
+            class="menu-item {{ request()->is('admin/company-setting') || request()->is('admin/company-setting/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons bx bxs-category-alt' ></i>
+                <div data-i18n="Account Settings">Company Setting</div>
+            </a>
+            <ul class="menu-sub">
+                <li
+                    class="menu-item {{ request()->is('admin/company-setting/services') || request()->is('admin/company-setting/services/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.services.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.services.title') }}</div>
+                    </a>
+                </li>
 
-                    <li
-                        class="menu-item {{ request()->is('admin/company-setting/promotions') || request()->is('admin/company-setting/promotions/*') ? 'active open' : '' }}">
-                        <a href="{{ route('admin.promotions.index') }}" class="menu-link">
-                            <div data-i18n="Account">{{ __('messages.promotions.title') }}</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+                <li
+                    class="menu-item {{ request()->is('admin/company-setting/promotions') || request()->is('admin/company-setting/promotions/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.promotions.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.promotions.title') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li
+            class="menu-item {{ request()->is('admin/career-setting') || request()->is('admin/career-setting/*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons bx bxs-briefcase-alt-2'></i>
+                <div data-i18n="Account Settings">Career Setting</div>
+            </a>
+            <ul class="menu-sub">
+                <li
+                    class="menu-item {{ request()->is('admin/career-setting/locations') || request()->is('admin/career-setting/locations/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.locations.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.locations.title') }}</div>
+                    </a>
+                </li>
+
+                <li
+                    class="menu-item {{ request()->is('admin/career-setting/positions') || request()->is('admin/career-setting/positions/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.positions.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.positions.title') }}</div>
+                    </a>
+                </li>
+
+                <li
+                    class="menu-item {{ request()->is('admin/career-setting/departments') || request()->is('admin/career-setting/departments/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.departments.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.departments.title') }}</div>
+                    </a>
+                </li>
+
+                <li
+                    class="menu-item {{ request()->is('admin/career-setting/careers') || request()->is('admin/career-setting/careers/*') ? 'active open' : '' }}">
+                    <a href="{{ route('admin.careers.index') }}" class="menu-link">
+                        <div data-i18n="Account">{{ __('messages.careers.title') }}</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </aside>

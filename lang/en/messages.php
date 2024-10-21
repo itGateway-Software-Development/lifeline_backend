@@ -112,4 +112,44 @@ return [
                 'info_img' => 'Information Image'
             ]
         ],
+
+        'locations' => [
+            'title' => 'Locations',
+            'fields' => [
+                'title' => 'Locations',
+                'name' => 'Location Name',
+                'description' => 'Description',
+            ]
+        ],
+
+        'positions' => [
+            'title' => 'Positions',
+            'fields' => [
+                'title' => 'Positions',
+                'name' => 'Name',
+                'description' => 'Description',
+            ]
+        ],
+
+        'departments' => [
+            'title' => 'Departments',
+            'fields' => [
+                'title' => 'Departments',
+                'name' => 'Name',
+                'description' => 'Description',
+            ]
+        ],
+
+        'careers' => [
+            'title' => 'Careers',
+            'fields' => [
+                'title' => 'Careers',
+                'careers_title' => 'Title',
+                'location' => 'Location',
+                'position' => 'Position',
+                'department' => 'Department',
+                'posts' => 'Number of Posts',
+                'requirements' => 'Requirements',
+            ]
+        ],
 ];
