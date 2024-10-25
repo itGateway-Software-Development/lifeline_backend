@@ -95,9 +95,25 @@
                             $.each(errors, function(key, value) {
                                 errorMessage += value[0] + '\n';
                             });
-                            alert(errorMessage);
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Fail",
+                                    text: errorMessage,
+                                }).then(result => {
+                                    if(result.isConfirmed) {
+                                        window.location.href = "{{ route('admin.academic-activities.index') }}";
+                                    }
+                                });
                         } else {
-                            alert('Something went wrong. Please try again later.');
+                            Swal.fire({
+                                    icon: "error",
+                                    title: "Fail",
+                                    text: "Something went wrong. Please try again later.",
+                                }).then(result => {
+                                    if(result.isConfirmed) {
+                                        window.location.href = "{{ route('admin.academic-activities.index') }}";
+                                    }
+                                });
                         }
                     }
                 });
