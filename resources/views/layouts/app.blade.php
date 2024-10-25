@@ -59,6 +59,8 @@
     {{-- flatpicker  --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
+    @yield('styles')
+
 </head>
 
 <body>
@@ -73,7 +75,7 @@
             <div class="layout-page">
                 @include('layouts.nav')
                 <div class="content-wrapper">
-                    <div class="container-xxl flex-grow-1 container-p-y">
+                    <div class="container-xxl flex-grow-1 container-p-y ">
                         @yield('content')
                     </div>
 

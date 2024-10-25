@@ -69,8 +69,8 @@ class AcademicActivityController extends Controller
     }
 
     public function store(StoreAcademicActivityRequest $request) {
-
         DB::beginTransaction();
+        logger($request->all());
 
         try {
             $academic = new AcademicActivity();
@@ -79,22 +79,26 @@ class AcademicActivityController extends Controller
             $academic->full_link = $request->full_link;
             $academic->save();
 
-            if ($request->file('link')) {
-                $fileName = uniqid() . $request->file('link')->getClientOriginalName();
-                $request->file('link')->storeAs('public/videos/', $fileName);
+            if ($request->hasFile('link')) {
+                $fileName = uniqid() . '_' . $request->file('link')->getClientOriginalName();
+                $filePath = $request->file('link')->storeAs('public/videos', $fileName);
 
                 $academic->link = $fileName;
-                $academic->update();
+                $academic->save();
             }
+
             DB::commit();
-            return redirect()->route('admin.academic-activities.index')->with('success', 'Successfully Created !');
+            return response()->json(['status' => 'success', 'message' => 'Successfullly Created !']);
 
-        }catch(\Exception $error) {
+        } catch (\Exception $error) {
             DB::rollBack();
-            return redirect()->back()->with('fail', 'Something wrong !');
-        }
 
+            \Log::error('Academic activity creation failed: ' . $error->getMessage());
+
+            return response()->json(['status' => 'fail', 'message' => 'Something wrong !']);
+        }
     }
+
 
     public function edit(AcademicActivity $academicActivity) {
         return view('admin.activity.academic.edit', compact('academicActivity'));
