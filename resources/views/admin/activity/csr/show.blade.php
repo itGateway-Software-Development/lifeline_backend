@@ -37,6 +37,22 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <th>{{ __('messages.csr.fields.videos') }}</th>
+                    <td>
+                        <div class="d-flex flex-wrap gap-3">
+                            @foreach ($csrActivity->csrVideos as $video)
+                                <div class="video-container">
+                                    <video width="200" controls>
+                                        <source src="{{ Storage::url($video->file_path) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
+
             </table>
             <button class="btn btn-outline-secondary mt-3 back-btn">Back to List</button>
         </div>

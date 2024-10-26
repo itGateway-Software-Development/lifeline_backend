@@ -7,9 +7,11 @@
         <div>{{ __('messages.news.title') }} Creation</div>
     </div>
     <div class="card mt-3 p-4">
+        @include('loading')
+
         <span class="mb-4">{{ __('messages.news.title') }} Creation</span>
 
-        <form action="{{ route('admin.new-events.store') }}" method="post" id="news_create">
+        <form action="{{ route('admin.new-events.store') }}" method="post" id="news_create" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12 col-12">
@@ -41,10 +43,26 @@
                         @enderror
                     </div>
                 </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div class="form-group my-4 video-group">
+                        <div class="d-flex justify-content-between align-items-center mb-2 border-bottom">
+                            <label for="">{{ __('messages.csr.fields.videos') }}</label>
+                            <i class='bx bx-plus me-2 bg-info p-1 cursor-pointer rounded-circle text-white add-video'></i>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center gap-3 mb-2">
+                            <input type="file" class="form-control " name="videos[]" accept="video/*">
+                            <i class='bx bx-minus bg-danger p-1 cursor-pointer rounded-circle text-white remove-video'></i>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="mt-5">
                 <button class="btn btn-secondary back-btn">Cancel</button>
-                <button class="btn btn-primary">Create</button>
+                <button class="btn btn-primary" id="submit_button">Create</button>
             </div>
         </form>
     </div>
@@ -96,10 +114,101 @@
                 })
             }
 
-            ClassicEditor
-                .create( document.querySelector( '#content' ) )
-                .catch( error => {
-                console.error( error );
+            let contentEditor;
+                ClassicEditor
+                    .create(document.querySelector('#content'))
+                    .then(editor => {
+                        contentEditor = editor;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+            $(document).on('click', '.add-video', function() {
+                $('.video-group').append(`
+                    <div class="d-flex justify-content-between align-items-center gap-3 mb-2">
+                        <input type="file" class="form-control " name="videos[]" accept="video/*">
+                        <i class='bx bx-minus bg-danger p-1 cursor-pointer rounded-circle text-white remove-video'></i>
+                    </div>
+                `)
+            })
+
+            $(document).on('click', '.remove-video', function() {
+                $(this).parent().remove();
+            })
+
+            $('#submit_button').on('click', function(e) {
+                e.preventDefault();
+                $('.load-page').removeClass('d-none')
+
+                // Create a FormData object to handle file uploads
+                var formData = new FormData($('#news_create')[0]);
+                formData.append('content', contentEditor.getData());
+
+                $.ajax({
+                    url: "{{ route('admin.new-events.store') }}",
+                    method: "POST",
+                    data: formData,
+                    processData: false, // prevent jQuery from processing the data
+                    contentType: false, // prevent jQuery from setting content type
+                    success: function(response) {
+                        // Handle the success response
+                        if(response.status == 'success') {
+                            $('.load-page').addClass('d-none')
+                            Swal.fire({
+                                icon: "success",
+                                title: "Success",
+                                text: response.message,
+                            }).then(result => {
+                                if(result.isConfirmed) {
+                                    window.location.href = "{{ route('admin.new-events.index') }}";
+                                }
+                            });
+                        } else {
+                            $('.load-page').addClass('d-none')
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Fail",
+                                text: response.message,
+                            }).then(result => {
+                                if(result.isConfirmed) {
+                                    window.location.href = "{{ route('admin.new-events.index') }}";
+                                }
+                            });
+                        }
+
+                    },
+                    error: function(xhr) {
+                        // Handle validation errors
+                        if (xhr.status === 422) {
+                            var errors = xhr.responseJSON.errors;
+                            var errorMessage = '';
+                            $.each(errors, function(key, value) {
+                                errorMessage += value[0] + '\n';
+                            });
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Fail",
+                                    text: errorMessage,
+                                }).then(result => {
+                                    if(result.isConfirmed) {
+                                        window.location.href = "{{ route('admin.new-events.index') }}";
+                                    }
+                                });
+                        } else {
+                            Swal.fire({
+                                    icon: "error",
+                                    title: "Fail",
+                                    text: "Something went wrong. Please try again later.",
+                                }).then(result => {
+                                    if(result.isConfirmed) {
+                                        window.location.href = "{{ route('admin.new-events.index') }}";
+                                    }
+                                });
+                        }
+                    }
+                });
             });
         })
     </script>

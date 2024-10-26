@@ -15,4 +15,8 @@ class NewEvent extends Model implements HasMedia
     {
         return collect($this->getMedia('news_events'));
     }
+
+    public function newsVideos() {
+        return $this->hasMany(NewsVideo::class, 'new_event_id', 'id');
+    }
 }

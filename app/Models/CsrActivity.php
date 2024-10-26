@@ -15,4 +15,8 @@ class CsrActivity extends Model implements HasMedia
     {
         return collect($this->getMedia('csr'));
     }
+
+    public function csrVideos() {
+        return $this->hasMany(CsrVideo::class);
+    }
 }

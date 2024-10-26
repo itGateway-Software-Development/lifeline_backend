@@ -66,7 +66,8 @@ return [
                 'csr_title' => 'Title',
                 'date' => 'Year',
                 'content' => 'Content',
-                'photos' => 'Photos'
+                'photos' => 'Photos',
+                'videos' => 'Videos'
             ]
         ],
 

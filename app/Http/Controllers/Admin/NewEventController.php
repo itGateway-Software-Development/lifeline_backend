@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Admin\UpdateNewsRequest;
+use DataTables;
 use App\Models\NewEvent;
+use App\Models\NewsVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\StoreNewsRequest;
-use DataTables;
+use App\Http\Requests\Admin\UpdateNewsRequest;
 
 class NewEventController extends Controller
 {
@@ -83,19 +85,31 @@ class NewEventController extends Controller
 
     public function store(StoreNewsRequest $request) {
         DB::beginTransaction();
+
         try {
-            $csr = new NewEvent();
-            $csr->title = $request->title;
-            $csr->date = $request->date;
-            $csr->content = $request->content;
-            $csr->save();
+            $news = new NewEvent();
+            $news->title = $request->title;
+            $news->date = $request->date;
+            $news->content = $request->content;
+            $news->save();
 
             foreach ($request->input('images', []) as $image) {
-                $csr->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('news_events');
+                $news->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('news_events');
+            }
+
+            foreach ($request->file('videos', []) as $uploadedVideo) {
+                $fileName = uniqid() . '_' . $uploadedVideo->getClientOriginalName();
+                $filePath = $uploadedVideo->storeAs('public/videos', $fileName);
+
+                $video = new NewsVideo();
+                $video->title = 'news';
+                $video->file_path = 'videos/' . $fileName;
+                $video->new_event_id = $news->id;
+                $video->save();
             }
 
             DB::commit();
-            return redirect()->route('admin.new-events.index')->with('success', 'Successfully Created !');
+            return response()->json(['status' => 'success', 'message' => 'Successfullly Created !']);
         } catch (\Exception $error) {
             DB::rollback();
             logger($error->getMessage());
@@ -151,6 +165,16 @@ class NewEventController extends Controller
         DB::beginTransaction();
 
         try {
+            foreach ($newEvent->newsImages() as $media) {
+                $media->delete();
+            }
+
+            $videos = NewsVideo::where('new_event_id', $newEvent->id)->get();
+
+            foreach ($videos as $video) {
+                Storage::delete('public/'.$video->file_path);
+                $video->delete();
+            }
             $newEvent->delete();
 
             DB::commit();

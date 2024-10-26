@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-use App\Http\Resources\CsrPhotoResource;
 use App\Models\CsrActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\CsrPhotoResource;
 
 class CsrController extends Controller
 {
@@ -30,6 +31,11 @@ class CsrController extends Controller
         if(is_null($csr)) {
             return 'error';
         }
+
+        $csr->csrVideos->each(function ($video) {
+            // Assuming `file_path` contains the filename stored under 'public/videos/'
+            $video->full_url = Storage::disk('public')->url( $video->file_path);
+        });
 
         return response()->json(['csr' => $csr]);
     }

@@ -23,6 +23,7 @@ class NewEventResource extends JsonResource
             "media" => array_map(function($media){
                 return $media['original_url'];
             }, $this->media->toArray()),
+            "videos" => $this->newsVideos
         ];
     }
 

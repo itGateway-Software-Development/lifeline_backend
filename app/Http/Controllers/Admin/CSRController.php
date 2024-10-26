@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Admin\UpdateCSRRequest;
+use DataTables;
+use App\Models\CsrVideo;
 use App\Models\CsrActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Admin\StoreCSRRequest;
-use DataTables;
+use App\Http\Requests\Admin\UpdateCSRRequest;
 
 class CSRController extends Controller
 {
@@ -118,6 +120,7 @@ class CSRController extends Controller
 
     public function store(StoreCSRRequest $request) {
         DB::beginTransaction();
+
         try {
             $csr = new CsrActivity();
             $csr->title = $request->title;
@@ -128,9 +131,19 @@ class CSRController extends Controller
             foreach ($request->input('images', []) as $image) {
                 $csr->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('csr');
             }
+            foreach ($request->file('videos', []) as $uploadedVideo) {
+                $fileName = uniqid() . '_' . $uploadedVideo->getClientOriginalName();
+                $filePath = $uploadedVideo->storeAs('public/videos', $fileName);
+
+                $video = new CsrVideo();
+                $video->title = 'csr';
+                $video->file_path = 'videos/' . $fileName;
+                $video->csr_activity_id = $csr->id;
+                $video->save();
+            }
 
             DB::commit();
-            return redirect()->route('admin.csr-activities.index')->with('success', 'Successfully Created !');
+            return response()->json(['status' => 'success', 'message' => 'Successfullly Created !']);
         } catch (\Exception $error) {
             DB::rollback();
             logger($error->getMessage());
@@ -139,6 +152,7 @@ class CSRController extends Controller
     }
 
     public function show(CsrActivity $csrActivity) {
+        $csrActivity = $csrActivity->load('csrVideos');
         return view('admin.activity.csr.show', compact('csrActivity'));
     }
 
@@ -188,6 +202,17 @@ class CSRController extends Controller
         DB::beginTransaction();
 
         try {
+            foreach ($csrActivity->csrImages() as $media) {
+                $media->delete();
+            }
+
+            $videos = CsrVideo::where('csr_activity_id', $csrActivity->id)->get();
+
+            foreach ($videos as $video) {
+                logger($video->file_path);
+                Storage::delete('public/'.$video->file_path);
+                $video->delete();
+            }
             $csrActivity->delete();
 
             DB::commit();

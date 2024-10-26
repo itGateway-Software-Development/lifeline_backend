@@ -24,7 +24,6 @@ class StoreNewsRequest extends FormRequest
         return [
             'title' => 'required',
             'date' => 'required',
-            'content' => 'required',
             'images' => 'required',
         ];
     }
