@@ -50,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('/csr-activities/{id}', [CsrController::class, 'show']);
     Route::get('/get-csr-photos', [CsrController::class, 'getCsrPhotos']);
 
+
     //news-events
     Route::get('/news-events', [NewEventController::class, 'index']);
     Route::get('/news-events/{id}', [NewEventController::class, 'show']);
