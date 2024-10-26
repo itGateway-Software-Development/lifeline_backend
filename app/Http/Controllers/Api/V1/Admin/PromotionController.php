@@ -12,7 +12,7 @@ class PromotionController extends Controller
     public function index() {
         $promotions = Promotion::where('status', '1')->latest()->get();
 
-        return response()->json(['promotions' => new PromotionResource($promotions)]);
+        return response()->json(['promotions' => PromotionResource::collection($promotions)]);
 
     }
 }
