@@ -116,6 +116,7 @@ class PhotoGalleryController extends Controller
     }
 
     public function store(StorePhotoGalleryRequest $request) {
+        logger($request->all());
 
         DB::beginTransaction();
         try {

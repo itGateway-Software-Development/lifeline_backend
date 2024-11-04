@@ -61,12 +61,15 @@
         let uploadedImageMap = {}
         Dropzone.options.imageDropzone = {
             url: "{{ route('admin.photo-gallery.storeMedia') }}",
-            maxFilesize: 10,
+            maxFilesize: 256,
+            maxThumbnailFilesize: 256,
             addRemoveLinks: true,
             headers: {
                 'X-CSRF-TOKEN': "{{ csrf_token() }}"
             },
             success: function(file, response) {
+                console.log(file);
+                console.log(response);
 
                 $('form').append('<input type="hidden" name="images[]" value="' + response.name + '">')
                 uploadedImageMap[file.name] = response.name
