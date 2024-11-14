@@ -75,7 +75,8 @@
         let uploadedImageMap = {}
         Dropzone.options.imageDropzone = {
             url: "{{ route('admin.csr-activities.storeMedia') }}",
-            maxFilesize: 10,
+            maxFilesize: 256,
+            maxThumbnailFilesize: 256,
             addRemoveLinks: true,
             headers: {
                 'X-CSRF-TOKEN': "{{ csrf_token() }}"
