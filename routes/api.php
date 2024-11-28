@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\Admin\LocationController;
 use App\Http\Controllers\Api\V1\Admin\NewEventController;
 use App\Http\Controllers\Api\V1\Admin\PositionController;
 use App\Http\Controllers\Api\V1\Admin\PromotionController;
+use App\Http\Controllers\Api\V1\Admin\AnnouncementController;
 use App\Http\Controllers\Api\V1\Admin\PhotoGalleryController;
 use App\Http\Controllers\Api\V1\Admin\AcademicActivityController;
 
@@ -44,6 +45,9 @@ Route::group(['prefix' => 'v1'], function () {
 
     //PhotoGalery
     Route::get('/photo-gallery', [PhotoGalleryController::class, 'index']);
+
+    // Announcement
+    Route::get('/announcement', [AnnouncementController::class, 'index']);
 
     //csr
     Route::get('/csr-activities', [CsrController::class, 'index']);

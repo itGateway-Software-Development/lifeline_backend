@@ -78,12 +78,18 @@
         </li>
         @can('product_management_access')
             <li
-                class="menu-item {{ request()->is('admin/ingredients') || request()->is('admin/ingredients/*') || request()->is('admin/products') || request()->is('admin/products/*') || request()->is('admin/groups') || request()->is('admin/groups/*') || request()->is('admin/categories') || request()->is('admin/categories/*') ? 'active open' : '' }}">
+                class="menu-item {{ request()->is('admin/announcements') || request()->is('admin/announcements/*') || request()->is('admin/ingredients') || request()->is('admin/ingredients/*') || request()->is('admin/products') || request()->is('admin/products/*') || request()->is('admin/groups') || request()->is('admin/groups/*') || request()->is('admin/categories') || request()->is('admin/categories/*') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class='menu-icon tf-icons bx bxs-capsule'></i>
                     <div data-i18n="Account Settings">Products Management</div>
                 </a>
                 <ul class="menu-sub">
+                    <li
+                        class="menu-item {{ request()->is('admin/announcements') || request()->is('admin/announcements/*') ? 'active open' : '' }}">
+                        <a href="{{ route('admin.announcements.index') }}" class="menu-link">
+                            <div data-i18n="Account">Announcement</div>
+                        </a>
+                    </li>
                     @can('group_access')
                         <li
                             class="menu-item {{ request()->is('admin/groups') || request()->is('admin/groups/*') ? 'active open' : '' }}">

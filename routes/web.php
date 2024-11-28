@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\PromotionController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\IngredientController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\PhotoGalleryController;
 use App\Http\Controllers\Admin\AcademicActivityController;
 
@@ -75,6 +76,9 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin', 'as' => 'admin.'], fu
     Route::post('/products/deleteMedia', [ProductController::class, 'deleteMedia'])->name('products.deleteMedia');
     Route::get('/product-get-group', [ProductController::class, 'getGroup'])->name('product.get-group');
     Route::resource('products', ProductController::class);
+
+    Route::get('/announcements-list', [AnnouncementController::class, 'announcementLists']);
+    Route::resource('announcements', AnnouncementController::class);
 
     Route::group(['prefix' => 'activity'], function() {
         //photo gallery
