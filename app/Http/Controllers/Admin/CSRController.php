@@ -21,7 +21,7 @@ class CSRController extends Controller
 
     public function csrLists()
     {
-        $data = CsrActivity::query();
+        $data = CsrActivity::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

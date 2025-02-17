@@ -19,7 +19,7 @@ class AcademicActivityController extends Controller
 
     public function academicActivityList()
     {
-        $data = AcademicActivity::query();
+        $data = AcademicActivity::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

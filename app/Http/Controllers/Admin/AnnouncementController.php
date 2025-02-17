@@ -19,7 +19,7 @@ class AnnouncementController extends Controller
 
     public function announcementLists()
     {
-        $data = Announcement::query();
+        $data = Announcement::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

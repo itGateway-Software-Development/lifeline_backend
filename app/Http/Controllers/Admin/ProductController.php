@@ -31,7 +31,7 @@ class ProductController extends Controller
      */
     public function dataTable()
     {
-        $data = Product::with('ingredients', 'principle', 'category');
+        $data = Product::with('ingredients', 'principle', 'category')->orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

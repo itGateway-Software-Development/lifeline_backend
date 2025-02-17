@@ -16,7 +16,7 @@ class ServiceController extends Controller
 
     public function serviceLists()
     {
-        $data = Service::query();
+        $data = Service::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

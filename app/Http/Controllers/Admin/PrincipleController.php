@@ -23,7 +23,7 @@ class PrincipleController extends Controller
      */
     public function dataTable()
     {
-        $data = Principle::query();
+        $data = Principle::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

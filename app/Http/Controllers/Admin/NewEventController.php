@@ -20,7 +20,7 @@ class NewEventController extends Controller
 
     public function newsList()
     {
-        $data = NewEvent::query();
+        $data = NewEvent::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {

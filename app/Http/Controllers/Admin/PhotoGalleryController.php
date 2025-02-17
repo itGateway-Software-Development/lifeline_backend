@@ -19,7 +19,7 @@ class PhotoGalleryController extends Controller
 
     public function photoGalleryLists()
     {
-        $data = PhotoGallery::query();
+        $data = PhotoGallery::orderBy('id', 'desc');
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {
