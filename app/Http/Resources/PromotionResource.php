@@ -19,7 +19,9 @@ class PromotionResource extends JsonResource
             'title' => $this->title,
             'content' => $this->content,
             'main_img' => $this->main_img ? url('storage/images/'.$this->main_img) : null,
-            'info_img' => $this->info_img ? url('storage/images/'.$this->info_img) : null,
+            "promotion_images" => array_map(function($media){
+                return $media['original_url'];
+            }, $this->media->toArray()),
         ];
     }
 }

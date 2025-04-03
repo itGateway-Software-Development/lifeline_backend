@@ -19,7 +19,7 @@ class PromotionController extends Controller
 
     public function promotionLists()
     {
-        $data = Promotion::query();
+        $data = Promotion::latest();
 
         return Datatables::of($data)
             ->editColumn('plus-icon', function ($each) {
@@ -34,9 +34,12 @@ class PromotionController extends Controller
                 return $image;
             })
             ->editColumn('info_img', function($each) {
-                $url = url("/storage/images/$each->info_img");
-                $image = "<img src='$url' style='width: 100px;' />";
-                return $image;
+
+                if ($each->getMedia('promotion_images') && $each->getMedia('promotion_images')->count() > 0) {
+                    return '<img src="' . $each->getMedia('promotion_images')[0]->getUrl() . '" width="100" />';
+                } else {
+                    return '<img src="' . asset('default.png') . '" width="100" />';
+                }
             })
             ->editColumn('content', function($each) {
                 return substr(strip_tags($each->content), 0,200) . ' ...';
@@ -70,7 +73,7 @@ class PromotionController extends Controller
                 if (auth()->user()->can('photo_gallery_delete')) {
                 }
 
-                return '<div class="action-icon">' . $show_icon . $edit_icon . $del_icon . '</div>';
+                return '<div class="action-icon text-nowrap">' . $show_icon . $edit_icon . $del_icon . '</div>';
             })
             ->rawColumns(['main_img', 'info_img', 'status', 'action'])
             ->make(true);
@@ -83,6 +86,7 @@ class PromotionController extends Controller
 
     public function store(StorePromotionRequest $request) {
         DB::beginTransaction();
+
 
         try {
             $promotion = new Promotion();
@@ -98,17 +102,16 @@ class PromotionController extends Controller
                 $promotion->update();
             }
 
-            if ($request->file('info_img')) {
-                $fileName = uniqid() . $request->file('info_img')->getClientOriginalName();
-                $request->file('info_img')->storeAs('public/images/', $fileName);
-
-                $promotion->info_img = $fileName;
-                $promotion->update();
+            foreach ($request->input('images', []) as $image) {
+                $promotion->addMedia(storage_path('tmp/uploads/' . $image))->toMediaCollection('promotion_images');
             }
+
+
             DB::commit();
             return redirect()->route('admin.promotions.index')->with('success', 'Successfully crated !');
         }catch(\Exception $error) {
             DB::rollBack();
+            logger($error->getMessage());
             return redirect()->back()->with('fail', 'Something wrong !');
         }
     }
@@ -140,7 +143,6 @@ class PromotionController extends Controller
             $promotion->save();
 
             $oldMainImage = $promotion->main_img;
-            $oldInfoImage = $promotion->info_img;
 
             if ($request->file('main_img')) {
                 if ($oldMainImage) {
@@ -154,16 +156,21 @@ class PromotionController extends Controller
                 $promotion->update();
             }
 
-            if ($request->file('info_img')) {
-                if ($oldInfoImage) {
-                    Storage::disk('public')->delete('images/' . $oldInfoImage);
+            if (count($promotion->promotionImages()) > 0) {
+                foreach ($promotion->promotionImages() as $media) {
+                    if (!in_array($media->file_name, $request->input('images', []))) {
+                        logger('delete');
+                        $media->delete();
+                    }
                 }
+            }
 
-                $newPhoto = uniqid() . $request->file('info_img')->getClientOriginalName();
-                $request->file('info_img')->storeAs('public/images/', $newPhoto);
+            $media = $promotion->promotionImages()->pluck('file_name')->toArray();
 
-                $promotion->info_img = $newPhoto;
-                $promotion->update();
+            foreach ($request->input('images', []) as $file) {
+                if (count($media) === 0 || !in_array($file, $media)) {
+                    $promotion->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('promotion_images');
+                }
             }
 
             DB::commit();

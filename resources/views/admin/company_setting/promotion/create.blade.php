@@ -27,15 +27,19 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+                <div class="col-12 col-md-8">
                     <div class="form-group mb-4">
-                        <label for="">{{ __('messages.promotions.fields.info_img') }}</label>
-                        <input type="file" name="info_img" class="form-control" onchange="showPreviewInfo(this);" required>
-                        <img src="" class="mt-3" style="object-fit: cover;" alt="" id="preview_img_info">
+                        <label for="">{{ __('messages.product.fields.photo') }}</label>
+                        <div class="needslick dropzone" id="image-dropzone">
+
+                        </div>
+                        @error('images')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
-                <div class="col-md-10 col-sm-12 col-12">
+                <div class="col-12 col-md-8">
                     <div class="form-group mb-4">
                         <label for="">{{ __('messages.promotions.fields.content') }} <span class="text-danger">*</span></label>
                         <textarea name="content" id="content" cols="30" rows="5" class="form-control cke-editor content"></textarea>
@@ -65,17 +69,55 @@
             }
         }
 
-        let showPreviewInfo = (input) => {
-            if (input.files && input.files[0]) {
-                let reader = new FileReader();
+        let uploadedImageMap = {}
+        Dropzone.options.imageDropzone = {
+            url: "{{ route('admin.products.storeMedia') }}",
+            maxFilesize: 10,
+            addRemoveLinks: true,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            success: function(file, response) {
 
-                reader.onload = function(e) {
-                    $('#preview_img_info').attr('src', e.target.result).width(150).height(150);
-                }
+                $('form').append('<input type="hidden" name="images[]" value="' + response.name + '">')
+                uploadedImageMap[file.name] = response.name
+            },
+            removedfile: function(file) {
+                file.previewElement.remove();
+                file.previewElement.remove();
+                let name = file.file_name || uploadedImageMap[file.name];
+                $('input[name="images[]"][value="' + name + '"]').remove();
 
-                reader.readAsDataURL(input.files[0]);
+                $.ajax({
+                    url: "{{ route('admin.products.deleteMedia') }}", // Change this to the appropriate delete route
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        file_name: name
+                    },
+                    success: function(response) {
+                        console.log("File deleted successfully:", response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error deleting file:", error);
+                    }
+                });
+            },
+            init: function() {
+                @if (isset($project) && $project->document)
+                    var files =
+                        {!! json_encode($project->document) !!}
+                    for (var i in files) {
+                        var file = files[i]
+                        this.options.addedfile.call(this, file)
+                        file.previewElement.classList.add('dz-complete')
+                        $('form').append('<input type="hidden" name="images[]" value="' + file.file_name + '">')
+                    }
+                @endif
             }
         }
+
+
         $(document).ready(function() {
 
             ClassicEditor

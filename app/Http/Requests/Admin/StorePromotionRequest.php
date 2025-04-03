@@ -25,7 +25,6 @@ class StorePromotionRequest extends FormRequest
             'title' => 'required',
             'content' => 'required',
             'main_img' => 'required',
-            'info_img' => 'required'
         ];
     }
 }

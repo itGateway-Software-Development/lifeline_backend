@@ -31,7 +31,11 @@
                 <tr>
                     <th>{{ __('messages.promotions.fields.info_img') }}</th>
                     <td>
-                        <img width="150" src="{{url('storage/images/'.$promotion->info_img)}}" alt="">
+                        <div class="d-flex align-items-center gap-4 overflow-x-scroll">
+                            @foreach ($promotion->getMedia('promotion_images') as $image)
+                                <img src="{{ $image->getUrl() }}" alt="" width="200">
+                            @endforeach
+                        </div>
                     </td>
                 </tr>
 
